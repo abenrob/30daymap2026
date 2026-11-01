@@ -1,0 +1,6 @@
+duckdb>=1.4
+matplotlib>=3.8
+numpy>=1.26
+pmtiles>=3.4
+mapbox-vector-tile>=2.1
+requests>=2.31

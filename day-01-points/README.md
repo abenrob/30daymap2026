@@ -2,7 +2,9 @@
 
 One question asked three ways: which places fall inside a box over Paris?
 
-![Three methods compared](images/comparison.png)
+| GeoParquet, clustered | Same rows, shuffled | PMTiles, zoom 12 |
+| --- | --- | --- |
+| ![](images/1-geoparquet.png) | ![](images/2-shuffled.png) | ![](images/3-pmtiles.png) |
 
 ![Row-group bounding boxes worldwide](images/world-row-groups.png)
 
@@ -39,7 +41,7 @@ PMTiles and pre-built GeoParquet are both fast because the work was done ahead o
 ## Files
 
 - `scripts/extract_metadata.py`: footers only, writes `rg.parquet` (row-group boxes) and the Paris dot layer
-- `scripts/make_figure.py`: the three-panel figure
+- `scripts/make_panels.py`: the three comparison images (`make_figure.py` draws them side by side)
 - `scripts/make_pmtiles.py`, `scripts/measure_pmtiles.py`, `scripts/replay_timing.py`: PMTiles build, request measurement, timing replay
 - `scripts/make_world_figure.py`: the world map of row-group boxes
 

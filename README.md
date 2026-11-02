@@ -12,6 +12,7 @@ Newest first. A row is added when the day is published.
 
 | Day | Theme | Map |
 | --- | --- | --- |
+| 2 | Lines | [26,297 km of lines that all end in one place: the Rhône, traced upstream from the sea](day-02-lines/) |
 | 1 | Points | [103 million places, one box over Paris: what three formats had to download](day-01-points/) |
 
 ## Layout

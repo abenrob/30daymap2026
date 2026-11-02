@@ -1,6 +1,11 @@
 # Day 2 · Lines: the Rhône, traced upstream from the sea
 
-Work in progress. Every reach that drains to the Rhône mouth, found by walking the network upstream, then animated flowing back down onto 3D terrain in Blender. Lakes fill as a front that travels at river speed, so the water leaves each lake exactly when the outflowing river starts.
+Every river segment that drains to the Rhône mouth, found by walking the network upstream with one recursive SQL query, then rendered on 3D terrain in Blender two ways.
+
+![The whole network, lit](images/rhone-network.png)
+
+- [`images/rhone-drips.gif`](images/rhone-drips.gif): the posted loop. Every line is lit and drips run downstream, faster on bigger rivers; lakes pass the flow across as bands. 4 s, loops without a seam.
+- The drawing-in version (rendered by `07_build_scene.py`, not in the repo): every line draws from its upstream end at the same speed, timed so all the water reaches the sea together; lakes fill as a front at river speed, so the water leaves each lake exactly when the outflowing river starts.
 
 ## Data
 
@@ -25,6 +30,8 @@ Run from the workspace root, in order:
 5. `scripts/05_preview.py`: a 2D check on a hillshade.
 6. `scripts/06_anim_data.py`: the clock and Blender inputs. A point lights up at `D_max - (network km to the sea)`, so all water reaches the sea together and every line draws at the same speed. Reaches are clipped at lake shores; inside each lake, a multi-source shortest path from every river point in it (each seeded with its own clock time) gives the time each lake pixel turns to water, stretched so the outlet fills exactly when the river leaves. Writes `work/data/day-02-lines/blender/`.
 7. `scripts/07_build_scene.py`: run with `blender -b -P`. Builds `work/blender/day-02-rhone.blend`: terrain from `height.png` in Geometry Nodes (nothing heavy stored in the .blend), rivers as Curves drawn by a Trim Curve node and draped by raycast, lakes as a mesh whose shader reads `lake_time.png`. One driver on the frame number runs the clock. Eevee, 1080 x 1350, 30 fps, 480 frames (1 s still, 12 s of flow, 3 s hold), fog-glow bloom in the compositor.
+
+8. `scripts/08_build_pulses.py`: run with `blender -b -P` after 07. Opens the drawing-in scene read-only and saves `work/blender/day-02-rhone-pulses.blend`: the clock frozen with everything on, and drips added in the river shader. Each piece gets a random phase and a speed tier by Strahler order (1x for orders 1 and 2, 2x for 3 to 5, 3x for 6 and 7); each tier moves a whole number of 20 km spacings in the 120-frame loop, so frame 121 equals frame 1. Lakes reuse their fill-time texture so bands cross them in step with the rivers. `MODE = "ants"` gives one global bead pattern tied to distance to the sea instead. Renders 120 PNG frames for ffmpeg.
 
 Python: `duckdb>=1.4,<2` with the spatial extension, `rasterio`, `numpy`; 05 and 06 also need `geopandas`, `pyarrow`, `shapely>=2.1`, `scipy`, `pillow` and `matplotlib`. Blender 4.2 or later for 07.
 

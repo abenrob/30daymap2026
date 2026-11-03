@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paris, Sorted</title>
+<meta name="description" content="Every building in each Paris arrondissement, by type and size, then lifted off the map and sorted from largest to smallest.">
+<meta property="og:title" content="Paris, sorted">
+<meta property="og:description" content="Every building in each Paris arrondissement by use and size, lifted off the map and sorted largest to smallest.">
+<meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-03-polygons/images/4e-sorted.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1115;--panel:#161920;--line:#2a2e37;--faint:#4a5060;--sub:#c9ccd3;--foot:#8a8f99;--text:#e8eaee;--lit:#ffb000}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+body{max-width:1200px;margin:0 auto;padding:20px 16px 32px}
+.back{font-size:13px;color:var(--foot);text-decoration:none;display:inline-block;margin-bottom:10px}
+.back:hover{color:var(--sub)}
+header h1{font-size:28px;margin:0 0 6px;font-weight:700}
+header p{margin:0;color:var(--sub);font-size:15px;line-height:1.5;max-width:760px}
+.top{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;margin:18px 0 12px}
+#picker{width:100%;height:auto;display:block;cursor:pointer}
+#picker path{fill:#1c2028;stroke:var(--bg);stroke-width:8}
+#picker path:hover{fill:#2c313c}
+#picker path.on{fill:var(--lit)}
+#picker text{fill:var(--foot);font-size:180px;pointer-events:none;text-anchor:middle;dominant-baseline:middle}
+#picker text.on{fill:var(--bg);font-weight:700}
+.sel{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,button{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+button{cursor:pointer}
+button:hover{border-color:var(--faint)}
+#name{font-size:24px;font-weight:700;margin:12px 0 4px}
+#facts{color:var(--sub);font-size:14px;line-height:1.6}
+#facts b{color:var(--lit);font-weight:500}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-top:6px;flex-wrap:wrap;align-items:flex-end}
+.tab{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;padding:10px 12px;color:var(--foot)}
+.tab.on{color:var(--text);border-bottom-color:var(--lit)}
+.opts{margin-left:auto;display:flex;gap:14px;padding:8px 0;color:var(--sub);font-size:13px}
+.opts label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.opts.hide{visibility:hidden}
+#stage{position:relative;width:100%;height:min(72vh,760px);background:var(--bg);border:1px solid var(--line);border-top:none}
+#cv{width:100%;height:100%;display:block}
+#shares{display:none;padding:20px;overflow:auto;height:100%}
+#tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--sub);display:none;white-space:nowrap}
+#scale{position:absolute;left:12px;bottom:10px;color:var(--foot);font-size:12px}
+#scale i{display:block;height:2px;background:var(--foot);margin-bottom:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0;font-size:13px;color:var(--sub)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
+h3{font-size:15px;margin:0 0 10px;color:var(--text)}
+.barrow{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin:6px 0;font-size:13px;color:var(--sub)}
+.bar{display:flex;height:26px;border-radius:4px;overflow:hidden;background:#1c2028}
+.bar div{height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#0f1115;font-weight:500;overflow:hidden;white-space:nowrap}
+.block{margin-bottom:26px;max-width:900px}
+.note{color:var(--foot);font-size:12px;margin-top:6px;line-height:1.5}
+.small .barrow{grid-template-columns:110px 1fr;margin:3px 0}
+.small .bar{height:14px}
+.small .barrow.on{color:var(--lit);font-weight:700}
+.small .barrow{cursor:pointer}
+footer{color:var(--foot);font-size:12px;line-height:1.6;margin-top:14px}
+footer a{color:var(--sub)}
+@media (max-width:720px){.top{grid-template-columns:1fr}#picker{max-width:260px}.opts{margin-left:0;width:100%}#stage{height:64vh}}
+</style>
+</head>
+<body>
+<header>
+<a class="back" href="../">&#8592; 30DayMapChallenge 2026</a>
+<h1>Paris, sorted</h1>
+<p>Pick an arrondissement. See what its buildings are used for, how big they are, then lift every one of them off the map and line them up from largest to smallest, at the same scale.</p>
+</header>
+
+<div class="top">
+<svg id="picker" aria-label="Map of the 20 arrondissements"></svg>
+<div>
+<div class="sel">
+<button id="prev" aria-label="Previous arrondissement">&#8592;</button>
+<select id="dd" aria-label="Arrondissement"></select>
+<button id="next" aria-label="Next arrondissement">&#8594;</button>
+</div>
+<div id="name"></div>
+<div id="facts"></div>
+</div>
+</div>
+
+<div class="tabs" role="tablist">
+<button class="tab on" data-v="map">Map</button>
+<button class="tab" data-v="shares">Shares</button>
+<button class="tab" data-v="sorted">Sorted</button>
+<div class="opts hide" id="opts">
+<label><input type="checkbox" id="grp"> Group by type</label>
+<label><input type="checkbox" id="aln" checked> Long side horizontal</label>
+</div>
+</div>
+<div id="stage">
+<canvas id="cv"></canvas>
+<div id="shares"></div>
+<div id="tip"></div>
+<div id="scale"><i></i><span></span></div>
+</div>
+<div class="legend" id="legend"></div>
+
+<footer>
+Buildings: IGN BD TOPO, <code>batiment</code> layer, buildings in service (Licence Ouverte 2.0). Arrondissements: IGN ADMIN EXPRESS. BD TOPO splits continuous street blocks into one building per plot, so a Haussmann block counts as several buildings. "Unspecified" is BD TOPO's own <i>Indifférencié</i> use.
+Made by Adam Roberts for the #30DayMapChallenge 2026, day 3: Polygons. <a href="https://github.com/abenrob/30daymap2026/tree/main/day-03-polygons">Code and method</a>.
+</footer>
+
+<script>
+const C={bg:'#0f1115',line:'#2a2e37',faint:'#4a5060'};
+const TYPES=[['Residential','#f2b134'],['Commercial & services','#4fb3d9'],['Industrial','#b07cf0'],['Religious','#ef6f6c'],['Sports','#5fd38d'],['Agricultural','#9bc53d'],['Annex','#8a8f99'],['Unspecified','#5a6070']];
+const SIZES=[['under 50 m²','#3d4a5c'],['50 to 200 m²','#5f7f9e'],['200 to 1,000 m²','#9fbfd8'],['over 1,000 m²','#e8f1f8']];
+const ORD=s=>s===1?'1er':s+'e';
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),stage=document.getElementById('stage');
+let IDX,cur=null,view='map',anim=1,animFrom=0,animTo=0,animStart=0,layout=null,hover=-1;
+const cache={};
+
+document.getElementById('legend').innerHTML=TYPES.map(t=>`<span><i style="background:${t[1]}"></i>${t[0]}</span>`).join('');
+
+function readHash(){const h=new URLSearchParams(location.hash.slice(1));return{a:+h.get('a')||4,v:h.get('v')||'map'}}
+function writeHash(){history.replaceState(null,'',`#a=${cur.n}&v=${view}`)}
+
+fetch('buildings/index.json').then(r=>r.json()).then(ix=>{IDX=ix;buildPicker();const s=readHash();view=['map','shares','sorted'].includes(s.v)?s.v:'map';load(Math.min(20,Math.max(1,s.a)))});
+addEventListener('hashchange',()=>{const s=readHash();if(!cur)return;if(s.v!==view)view=s.v;if(s.a!==cur.n)load(s.a);else setView(s.v,true)});
+
+function buildPicker(){
+  const sv=document.getElementById('picker');sv.setAttribute('viewBox',`0 0 ${IDX.w} ${IDX.h}`);
+  let html='';
+  for(const p of IDX.pick){
+    const d=p.rings.map(r=>{let s='';for(let i=0;i<r.length;i+=2)s+=(i?'L':'M')+r[i]+','+(IDX.h-r[i+1]);return s+'Z'}).join('');
+    let cx=0,cy=0,k=0;const r=p.rings[0];for(let i=0;i<r.length;i+=2){cx+=r[i];cy+=r[i+1];k++}
+    const lab={12:[-1800,0],16:[2000,0]}[p.n]||[0,0];
+    html+=`<path data-n="${p.n}" d="${d}"><title>${ORD(p.n)} arrondissement</title></path><text data-n="${p.n}" x="${cx/k+lab[0]}" y="${IDX.h-cy/k+lab[1]}">${p.n}</text>`;
+  }
+  sv.innerHTML=html;
+  sv.addEventListener('click',e=>{const n=e.target.dataset&&e.target.dataset.n;if(n)load(+n)});
+  const dd=document.getElementById('dd');
+  dd.innerHTML=IDX.arr.map(a=>`<option value="${a.n}">${ORD(a.n)} arrondissement</option>`).join('');
+  dd.onchange=()=>load(+dd.value);
+  document.getElementById('prev').onclick=()=>load(cur.n===1?20:cur.n-1);
+  document.getElementById('next').onclick=()=>load(cur.n===20?1:cur.n+1);
+}
+
+async function load(n){
+  if(!cache[n])cache[n]=await fetch(`buildings/arr${String(n).padStart(2,'0')}.json`).then(r=>r.json()).then(prep);
+  cur=cache[n];
+  document.getElementById('dd').value=n;
+  document.querySelectorAll('#picker [data-n]').forEach(el=>el.classList.toggle('on',+el.dataset.n===n));
+  const s=IDX.arr[n-1];
+  document.getElementById('name').textContent=`${ORD(n)} arrondissement`;
+  const res=s.tc[0]/s.count*100,resA=s.ta[0]/s.foot*100;
+  document.getElementById('facts').innerHTML=`<b>${s.count.toLocaleString('en')}</b> buildings · ${(s.foot/1e6).toFixed(2)} km² of footprint on ${(s.land/1e6).toFixed(2)} km² of land (${Math.round(s.foot/s.land*100)}%) · median height ${s.medh} m · ${s.pop.toLocaleString('en')} residents`;
+  layout=null;anim=view==='sorted'?1:0;animFrom=animTo=anim;
+  setView(view,true);writeHash();
+}
+
+function prep(d){
+  // world frame: metres, y down; vertices stored relative to each building's map bbox centre
+  const H=d.h/10,B=[];
+  for(const [t,area,h,dw,ang,rings] of d.b){
+    let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    const rs=rings.map(r=>{const a=new Float32Array(r.length);for(let i=0;i<r.length;i+=2){const x=r[i]/10,y=H-r[i+1]/10;a[i]=x;a[i+1]=y;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}return a});
+    const cx=(x0+x1)/2,cy=(y0+y1)/2;
+    for(const a of rs)for(let i=0;i<a.length;i+=2){a[i]-=cx;a[i+1]-=cy}
+    B.push({t,area,h,dw,ang:-ang,rs,cx,cy});
+  }
+  const outline=d.outline.map(r=>{const a=[];for(let i=0;i<r.length;i+=2)a.push(r[i]/10,H-r[i+1]/10);return a});
+  return{n:d.n,W:d.w/10,H,B,outline};
+}
+
+function computeLayout(){layoutPass(0);if(layout.grp){const f=fit(1);layoutPass(18/f.s)}}
+function layoutPass(labH){
+  const grp=document.getElementById('grp').checked,aln=document.getElementById('aln').checked;
+  const B=cur.B;
+  // rotated bbox per building
+  for(const b of B){
+    const th=aln?-b.ang:0,c=Math.cos(th),s=Math.sin(th);
+    let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    for(const a of b.rs)for(let i=0;i<a.length;i+=2){const x=c*a[i]-s*a[i+1],y=s*a[i]+c*a[i+1];if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+    let th2=th;
+    if(aln&&(y1-y0)>(x1-x0)){th2=th+Math.PI/2;[x0,x1,y0,y1]=[-y1,-y0,x0,x1]}
+    b.th=th2;b.bw=x1-x0;b.bh=y1-y0;b.bcx=(x0+x1)/2;b.bcy=(y0+y1)/2;
+  }
+  let order=B.map((b,i)=>i);
+  order.sort((i,j)=>grp?(B[i].t-B[j].t)||(B[j].area-B[i].area):B[j].area-B[i].area);
+  const gap=1.5;let tot=0;for(const b of B)tot+=(b.bw+gap)*(b.bh+gap);
+  const r=stage.clientWidth/stage.clientHeight;
+  const W=Math.sqrt(tot*1.12*r);
+  let x=0,y=0,rowH=0,lastT=-1;const labels=[];
+  for(const i of order){
+    const b=B[i];
+    if(grp&&b.t!==lastT){if(x>0){y+=rowH+gap;x=0;rowH=0}y+=labH+gap*2;labels.push([TYPES[b.t][0],y]);lastT=b.t}
+    if(x>0&&x+b.bw>W){x=0;y+=rowH+gap;rowH=0}
+    b.sx=x+b.bw/2;b.sy=y+b.bh/2;x+=b.bw+gap;if(b.bh>rowH)rowH=b.bh;
+  }
+  layout={W,H:y+rowH,labels,grp};
+}
+
+function fit(e){
+  const w=stage.clientWidth,h=stage.clientHeight,pad=28;
+  const sMap=Math.min((w-2*pad)/cur.W,(h-2*pad)/cur.H);
+  const sLay=layout?Math.min((w-2*pad)/layout.W,(h-2*pad)/layout.H):sMap;
+  e=e||0;const s=sMap+(sLay-sMap)*e;
+  // map and sorted views are each fitted; within a view every building shares one scale
+  return{s,sMap,sLay,mx:(w-cur.W*s)/2,my:(h-cur.H*s)/2,lx:layout?(w-layout.W*s)/2:0,ly:layout?(h-layout.H*s)/2:0};
+}
+function resize(){const d=devicePixelRatio||1;cv.width=stage.clientWidth*d;cv.height=stage.clientHeight*d;ctx.setTransform(d,0,0,d,0,0);if(view==='sorted'||anim>0)computeLayout();draw()}
+addEventListener('resize',resize);
+
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+function draw(){
+  if(!cur||view==='shares')return;
+  const w=stage.clientWidth,h=stage.clientHeight;ctx.fillStyle=C.bg;ctx.fillRect(0,0,w,h);
+  const e=ease(anim),f=fit(e),s=f.s;
+  // arrondissement outline fades out as buildings leave the map
+  if(e<1){ctx.globalAlpha=1-e;ctx.strokeStyle=C.faint;ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.beginPath();
+    for(const a of cur.outline){for(let i=0;i<a.length;i+=2){const X=f.mx+a[i]*s,Y=f.my+a[i+1]*s;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}ctx.closePath()}
+    ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}
+  const paths=TYPES.map(()=>new Path2D());
+  const B=cur.B;
+  for(let k=0;k<B.length;k++){
+    const b=B[k];
+    let th=0,ox=f.mx+b.cx*s,oy=f.my+b.cy*s;
+    if(e>0&&layout){
+      const th1=b.th;
+      // target: rotated shape whose rotated bbox centre sits on the slot centre
+      const fx=f.lx+(b.sx-b.bcx)*s+0, fy=f.ly+(b.sy-b.bcy)*s;
+      th=th1*e;ox=ox+(fx-ox)*e;oy=oy+(fy-oy)*e;
+    }
+    const c=Math.cos(th),sn=Math.sin(th),p=paths[b.t];
+    for(const a of b.rs){for(let i=0;i<a.length;i+=2){const X=ox+(c*a[i]-sn*a[i+1])*s,Y=oy+(sn*a[i]+c*a[i+1])*s;i?p.lineTo(X,Y):p.moveTo(X,Y)}p.closePath()}
+  }
+  for(let t=0;t<TYPES.length;t++){ctx.fillStyle=TYPES[t][1];ctx.fill(paths[t])}
+  if(hover>=0&&e===0||hover>=0&&e===1){const b=B[hover];ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke(hoverPath(b,f,e))}
+  if(layout&&layout.grp&&e>0){ctx.globalAlpha=e;ctx.fillStyle='#c9ccd3';ctx.font='500 12px Inter,sans-serif';
+    for(const [lab,y] of layout.labels){ctx.fillText(lab,f.lx,f.ly+y*s-4)}ctx.globalAlpha=1}
+  // scale bar
+  const m=[10,20,50,100,200,500,1000].find(v=>v*s>=60)||1000;
+  document.querySelector('#scale i').style.width=(m*s)+'px';document.querySelector('#scale span').textContent=m>=1000?m/1000+' km':m+' m';
+}
+function hoverPath(b,f,e){const s=f.s,th=e?b.th:0,c=Math.cos(th),sn=Math.sin(th);
+  const ox=e?f.lx+(b.sx-b.bcx)*s:f.mx+b.cx*s,oy=e?f.ly+(b.sy-b.bcy)*s:f.my+b.cy*s,p=new Path2D();
+  for(const a of b.rs){for(let i=0;i<a.length;i+=2){const X=ox+(c*a[i]-sn*a[i+1])*s,Y=oy+(sn*a[i]+c*a[i+1])*s;i?p.lineTo(X,Y):p.moveTo(X,Y)}p.closePath()}return p}
+
+function animateTo(t){if(matchMedia('(prefers-reduced-motion: reduce)').matches){anim=t;draw();return}animFrom=anim;animTo=t;animStart=performance.now();requestAnimationFrame(step)}
+function step(now){const d=Math.min(1,(now-animStart)/1600);anim=animFrom+(animTo-animFrom)*d;draw();if(d<1)requestAnimationFrame(step)}
+
+function setView(v,instant){
+  const prev=view;view=v;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  document.getElementById('opts').classList.toggle('hide',v!=='sorted');
+  const sh=document.getElementById('shares');
+  sh.style.display=v==='shares'?'block':'none';cv.style.display=v==='shares'?'none':'block';
+  document.getElementById('scale').style.display=v==='shares'?'none':'block';
+  if(v==='shares'){renderShares();writeHash();return}
+  resize();computeLayout();
+  const target=v==='sorted'?1:0;
+  if(instant||prev==='shares'){anim=target;draw()}else animateTo(target);
+  writeHash();
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.getElementById('grp').onchange=document.getElementById('aln').onchange=()=>{computeLayout();draw()};
+
+function bar(parts,total,cols){return `<div class="bar">${parts.map((v,i)=>{const p=v/total*100;return p>0?`<div style="width:${p}%;background:${cols[i]}" title="${p.toFixed(1)}%">${p>=7?Math.round(p)+'%':''}</div>`:''}).join('')}</div>`}
+function renderShares(){
+  const s=IDX.arr[cur.n-1],tc=TYPES.map(t=>t[1]),sc=SIZES.map(t=>t[1]);
+  const resC=s.tc[0]/s.count*100,resA=s.ta[0]/s.foot*100,bigC=s.sc[3]/s.count*100,bigA=s.sa[3]/s.foot*100,smallC=s.sc[0]/s.count*100,smallA=s.sa[0]/s.foot*100;
+  let h=`<div class="block"><h3>What the buildings are used for</h3>
+  <div class="barrow"><span>Buildings</span>${bar(s.tc,s.count,tc)}</div>
+  <div class="barrow"><span>Footprint</span>${bar(s.ta,s.foot,tc)}</div>
+  <div class="note">Residential: ${resC.toFixed(0)}% of buildings, ${resA.toFixed(0)}% of footprint.</div></div>
+  <div class="block"><h3>How big they are</h3>
+  <div class="barrow"><span>Buildings</span>${bar(s.sc,s.count,sc)}</div>
+  <div class="barrow"><span>Footprint</span>${bar(s.sa,s.foot,sc)}</div>
+  <div class="legend">${SIZES.map(t=>`<span><i style="background:${t[1]}"></i>${t[0]}</span>`).join('')}</div>
+  <div class="note">Buildings over 1,000 m² are ${bigC.toFixed(1)}% of buildings and ${bigA.toFixed(0)}% of footprint. Under 50 m²: ${smallC.toFixed(0)}% of buildings, ${smallA.toFixed(1)}% of footprint.</div></div>
+  <div class="block small"><h3>All 20 arrondissements, share of footprint by use</h3>
+  ${IDX.arr.map(a=>`<div class="barrow${a.n===cur.n?' on':''}" data-n="${a.n}"><span>${ORD(a.n)}</span>${bar(a.ta,a.foot,tc)}</div>`).join('')}
+  <div class="note">Click a row to switch arrondissement.</div></div>`;
+  const el=document.getElementById('shares');el.innerHTML=h;
+  el.querySelectorAll('.small .barrow').forEach(r=>r.onclick=()=>load(+r.dataset.n));
+}
+
+// hover: nearest building by bbox
+cv.addEventListener('mousemove',ev=>{
+  if(!cur||!(anim===0||anim===1))return;
+  const r=cv.getBoundingClientRect(),mx=ev.clientX-r.left,my=ev.clientY-r.top,e=anim,f=fit(e);
+  let best=-1;
+  for(let k=0;k<cur.B.length;k++){const b=cur.B[k];
+    let x,y,w,h;
+    if(e){x=f.lx+(b.sx-b.bw/2)*f.s;y=f.ly+(b.sy-b.bh/2)*f.s;w=b.bw*f.s;h=b.bh*f.s}
+    else{let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const a of b.rs)for(let i=0;i<a.length;i+=2){if(a[i]<x0)x0=a[i];if(a[i]>x1)x1=a[i];if(a[i+1]<y0)y0=a[i+1];if(a[i+1]>y1)y1=a[i+1]}
+      x=f.mx+(b.cx+x0)*f.s;y=f.my+(b.cy+y0)*f.s;w=(x1-x0)*f.s;h=(y1-y0)*f.s}
+    if(mx>=x&&mx<=x+w&&my>=y&&my<=y+h){best=k;break}
+  }
+  const tip=document.getElementById('tip');
+  if(best!==hover){hover=best;draw()}
+  if(best<0){tip.style.display='none';return}
+  const b=cur.B[best];
+  tip.innerHTML=`${TYPES[b.t][0]} · ${Math.round(b.area).toLocaleString('en')} m²${b.h?` · ${b.h} m tall`:''}${b.dw?` · ${b.dw} dwellings`:''}`;
+  tip.style.display='block';tip.style.left=Math.min(mx+12,r.width-tip.offsetWidth-4)+'px';tip.style.top=(my+12)+'px';
+});
+cv.addEventListener('mouseleave',()=>{hover=-1;document.getElementById('tip').style.display='none';draw()});
+</script>
+</body>
+</html>

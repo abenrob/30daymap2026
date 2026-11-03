@@ -8,12 +8,13 @@ Site: https://abenrob.github.io/30daymap2026/
 
 ## Days
 
-Newest first. A row is added when the day is published.
+In day order. A row is added when the day is published.
 
 | Day | Theme | Map |
 | --- | --- | --- |
-| 2 | Lines | [26,297 km of lines that all end in one place: the Rhône, traced upstream from the sea](day-02-lines/) |
 | 1 | Points | [103 million places, one box over Paris: what three formats had to download](day-01-points/) |
+| 2 | Lines | [26,297 km of lines that all end in one place: the Rhône, traced upstream from the sea](day-02-lines/) |
+| 3 | Polygons | [The 2,696 buildings of Paris's 4e, lifted off the map and sorted by use and size](day-03-polygons/) ([live page](https://abenrob.github.io/30daymap2026/day-03-polygons/)) |
 
 ## Layout
 

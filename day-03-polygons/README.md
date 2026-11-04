@@ -24,9 +24,9 @@ Two things to know when reading the numbers:
 
 ## Pipeline
 
-Run from a working folder outside the repo, in order:
+Run from a working folder outside the repo, in order. [`scripts/README.md`](scripts/README.md) has the inputs and outputs of each step and the ffmpeg commands.
 
-1. `scripts/01_fetch_bdtopo.py`: downloads every building over Paris from the WFS in 0.01° tiles, each under the 5,000-feature page size (225 tiles, about 5 minutes).
+1. `scripts/01_fetch_bdtopo.py`: downloads every building over Paris from the WFS in 0.01° tiles, each under the 5,000-feature page size (225 tiles, about 5 minutes), plus the 20 arrondissement outlines.
 2. `scripts/02_prep.py`: merges the tiles, drops duplicates and buildings not in service, and assigns each building to the arrondissement that contains a point inside it.
 3. `scripts/03_export.py`: writes `buildings/index.json` (per-arrondissement shares by use and size, plus the picker outlines) and one `buildings/arrNN.json` per arrondissement: use, area, height, dwellings, the long-axis angle of the minimum rotated rectangle, and the outline in Lambert-93 decimetres relative to the arrondissement's corner (simplified at 0.3 m).
 4. `scripts/04_make_animation.py 4 [ss]`: renders the loop as PNG frames. Encode with ffmpeg:

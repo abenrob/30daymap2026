@@ -16,7 +16,7 @@ shown while the walker is inside it, with the pause at its best spot. The end ca
 them as numbered markers with one legend.
 
 Run from the workspace root:
-  python3 site/day-05-senses-sight/scripts/17_gr738_frames.py [--layout L] [--stride N] [--still STEP]
+  python3 site/day-05-senses-sight/scripts/03_gr738_frames.py [--layout L] [--stride N] [--still STEP]
   --stride N    every Nth step only (quick preview)
   --still STEP  one timeline step to work/data/day-05-sight/renders/gr738_<layout>_step_STEP.png
 Input : gr738/ trail.csv, trail_full.csv, stats.json, masks.npy, dem_25m.tif, dem_50m.tif

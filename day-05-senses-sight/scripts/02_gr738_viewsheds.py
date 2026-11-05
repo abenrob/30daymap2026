@@ -4,7 +4,7 @@ Eye 1.7 m above the 50 m DEM cell, target = the ground itself (-tz 0), Earth cur
 standard refraction (-cc 0.85714), no maximum distance (the DEM crop is the limit).
 Masks are kept bit-packed in one file so the frame step can add them up as it draws.
 
-Run from the workspace root:  python3 site/day-05-senses-sight/scripts/16_gr738_viewsheds.py [--gdal PATH]
+Run from the workspace root:  python3 site/day-05-senses-sight/scripts/02_gr738_viewsheds.py [--gdal PATH]
 Output: work/data/day-05-sight/gr738/masks.npy (frames x rows x cols/8, uint8), stats.json
 """
 import argparse, csv, json, os, subprocess, tempfile, time

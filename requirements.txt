@@ -4,3 +4,7 @@ numpy>=1.26
 pmtiles>=3.4
 mapbox-vector-tile>=2.1
 requests>=2.31
+rasterio>=1.3
+pyproj>=3.6
+shapely>=2.0
+pillow>=10.0

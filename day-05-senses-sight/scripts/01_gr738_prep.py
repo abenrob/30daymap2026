@@ -9,6 +9,8 @@ Output: work/data/day-05-sight/gr738/
           trail_full.csv the chained OSM line (for drawing)
           dem_25m.tif    IGN RGE ALTI (Géoplateforme WMS-R, float32), trail bbox + PAD
           dem_50m.tif    2 x 2 average, the grid gdal_viewshed runs on
+
+Run from the workspace root:  python3 site/day-05-senses-sight/scripts/01_gr738_prep.py
 """
 import csv, json, math, os, re, time, urllib.request
 import numpy as np

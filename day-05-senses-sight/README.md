@@ -60,8 +60,8 @@ python3 site/day-05-senses-sight/scripts/15_gr738_prep.py
 python3 site/day-05-senses-sight/scripts/16_gr738_viewsheds.py [--gdal PATH]
 python3 site/day-05-senses-sight/scripts/17_gr738_frames.py                       # 4:5, for the site
 python3 site/day-05-senses-sight/scripts/17_gr738_frames.py --layout landscape   # 16:9, for LinkedIn
-cp work/data/day-05-sight/renders/day-05-gr738.mp4 site/day-05-senses-sight/images/
-cp work/data/day-05-sight/renders/gr738_final.png site/day-05-senses-sight/images/gr738-end-card.png
+cp work/data/day-05-sight/renders/day-05-gr738-16x9.mp4 site/day-05-senses-sight/images/day-05-gr738.mp4
+cp work/data/day-05-sight/renders/gr738_final_16x9.png site/day-05-senses-sight/images/gr738-end-card.png
 ```
 
 ## Also built on the way

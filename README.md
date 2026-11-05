@@ -16,6 +16,7 @@ In day order. A row is added when the day is published.
 | 2 | Lines | [26,297 km of lines that all end in one place: the Rhône, traced upstream from the sea](day-02-lines/) |
 | 3 | Polygons | [The 2,696 buildings of Paris's 4e, lifted off the map and sorted by use and size](day-03-polygons/) ([live page](https://abenrob.github.io/30daymap2026/day-03-polygons/)) |
 | 4 | Clusters | [Every building in Denmark grouped into settlements at 10 m: 4.16 million footprints in 5.3 minutes, inside Snowflake](day-04-clusters/) ([map](https://clausa.app.carto.com/map/c5aa833e-6180-4c49-891c-ba54a64e8455)) |
+| 5 | Senses: Sight | [What you can see from every point of the GR 738 across Belledonne](day-05-senses-sight/) ([video](https://abenrob.github.io/30daymap2026/day-05-senses-sight/)) |
 
 ## Layout
 

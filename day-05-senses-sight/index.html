@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GR 738 Viewshed · Day 5</title>
+  <meta name="description" content="What a walker on the GR 738 across Belledonne can see, about every 150 m: 900 gdal_viewshed runs drawn as a video.">
+  <meta property="og:title" content="What you can see from every point of the GR 738 across Belledonne">
+  <meta property="og:description" content="900 viewsheds along the Haute Traversée de Belledonne, from Aiguebelle to Vizille.">
+  <meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-05-senses-sight/images/gr738-end-card.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 0 16px 40px; }
+    video { display: block; width: 100%; max-width: 540px; margin: 8px auto 16px; border-radius: 8px; background: #0f1115; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 8px 0 16px; }
+    td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+    td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="quiet"><a href="../">30DayMapChallenge 2026</a> · Day 5 · Senses: Sight</div>
+    <h1>What you can see from every point of the GR 738 across Belledonne</h1>
+  </header>
+  <main>
+    <video src="images/day-05-gr738.mp4" poster="images/gr738-end-card.png" controls muted loop playsinline preload="metadata"></video>
+
+    <p>The Haute Traversée de Belledonne runs 131 km from Aiguebelle to Vizille. Each frame is a viewshed from eye height (1.7 m) on the trail, about every 150 m: amber is the ground in sight at that step, the faint tint is everything already seen. 900 runs of <code>gdal_viewshed</code> on IGN RGE ALTI at 50 m, with Earth curvature and refraction and no distance cap.</p>
+
+    <table>
+      <tr><th>Place</th><th>Altitude</th><th class="n">Ground in sight</th></tr>
+      <tr><td>Grand Chat (widest view on the route)</td><td>1,992 m</td><td class="n">552 km²</td></tr>
+      <tr><td>Refuge des 7 Laux</td><td>2,135 m</td><td class="n">13 km²</td></tr>
+      <tr><td>Col de la Vache (highest point)</td><td>2,556 m</td><td class="n">145 km²</td></tr>
+      <tr><td>Refuge de La Pra</td><td>2,105 m</td><td class="n">2 km²</td></tr>
+      <tr><td>Chamrousse ski area, best spot</td><td>1,669 m</td><td class="n">311 km²</td></tr>
+      <tr><td>Whole route, seen at least once</td><td></td><td class="n">2,225 km²</td></tr>
+    </table>
+
+    <p class="quiet">Bare earth: forests and buildings do not block the view. Terrain loaded to at least 35 km around the trail; views reach up to 93 km.
+    Trail © OpenStreetMap contributors (ODbL). Terrain IGN RGE ALTI via the Géoplateforme (Licence Ouverte 2.0).
+    Method, numbers and scripts: <a href="https://github.com/abenrob/30daymap2026/tree/main/day-05-senses-sight">README and code on GitHub</a>.</p>
+  </main>
+</body>
+</html>

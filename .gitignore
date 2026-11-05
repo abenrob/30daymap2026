@@ -84,6 +84,5 @@ data/
 *.blend
 *.blend1
 *.blend2
-*.mp4
 *.mov
 renders/

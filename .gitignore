@@ -86,3 +86,4 @@ data/
 *.blend2
 *.mov
 renders/
+*.env

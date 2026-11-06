@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Vintages · wine across borders, 1962–2023</title>
+<meta name="description" content="Sixty years of wine crossing borders: who sold to whom, year by year, on the borders of the time.">
+<meta property="og:title" content="The Vintages: wine across borders, 1962–2023">
+<meta property="og:description" content="Who sold wine to whom, every year since 1962, on the borders of the time. UN Comtrade and CShapes 2.0.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="back" href="../">‹ 30 Day Map Challenge 2026</a>
+<header>
+  <div>
+    <div class="kicker">Day 6 · Vintage</div>
+    <h1>The Vintages</h1>
+    <p class="dek">Every year since 1962, who sold wine to whom, drawn on the borders of the time.</p>
+  </div>
+  <div class="vintage">
+    <div class="label">Vintage</div>
+    <div class="year" id="year">1962</div>
+    <div class="total" id="total"></div>
+  </div>
+</header>
+
+<div class="controls">
+  <label for="country">Country</label>
+  <select id="country"><option value="">All countries</option></select>
+  <button class="play" id="play">Play</button>
+  <div class="slider">
+    <input type="range" id="slider" min="1962" max="2023" step="1" value="1962" aria-label="Year">
+    <div class="ticks" id="ticks"></div>
+  </div>
+  <div class="speed" id="speed"><button data-ms="1600">Slow</button><button data-ms="900" class="on">Normal</button><button data-ms="450">Fast</button></div>
+</div>
+<div class="legend" id="legend"></div>
+
+<figure><svg id="map" viewBox="0 0 1150 560" role="img" aria-label="World map of wine flows"></svg></figure>
+
+<div class="section-title"><h2 id="sankey-title">Who sold, who bought</h2><span class="note" id="sankey-note"></span></div>
+<figure><svg id="sankey" viewBox="0 0 1150 640" role="img" aria-label="Sankey chart of wine flows"></svg></figure>
+
+<footer>
+  <p><b>Trade.</b> UN Comtrade, wine of fresh grapes: SITC 1121 (Revisions 1 to 3) and HS 2204. For each country and year the most complete submission is used. Each flow is the importer's report where it exists and the exporter's report otherwise. Volumes are in litres; where only value was reported, volume is estimated from that year's median price. Figures shown are transformed from the original records. Source: UN Comtrade.</p>
+  <p><b>Borders.</b> CShapes 2.0 (Schvitz, Rüegger, Girardin, Cederman, Weidmann and Gleditsch, 2022, <i>Journal of Conflict Resolution</i>), CC BY-NC-SA 4.0. Borders are drawn as CShapes publishes them for 1 July of each year, with no edits; CShapes ends in 2019 and its 2019 borders are carried to 2023. Territories CShapes does not include (for example Réunion, Hong Kong, and colonies before independence) appear as land without a border, from Natural Earth (public domain).</p>
+  <p><b>Countries.</b> Successor states have their own slot from the year they report, next to their predecessor. Names follow Comtrade for each year.</p>
+  <p><b>Reading it.</b> Arcs take the shortest way round the globe, so Pacific flows leave one edge and return on the other. Each arc bows to its own left, so a flow and its return run side by side. Width is volume.</p>
+</footer>
+<div class="cap-foot"><span>Trade: UN Comtrade, wine of fresh grapes. Borders: CShapes 2.0.</span><span>#30DayMapChallenge · Day 6</span></div>
+<div class="tip" id="tip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -19,6 +19,7 @@ In day order. A row is added when the day is published.
 | 5 | Senses: Sight | [What you can see from every point of the GR 738 across Belledonne](day-05-senses-sight/) ([video](https://abenrob.github.io/30daymap2026/day-05-senses-sight/)) |
 | 6 | Vintage | [Sixty years of the wine trade, on the borders of each year](day-06-vintage/) ([live page](https://abenrob.github.io/30daymap2026/day-06-vintage/)) |
 | 7 | 10 minute map | [177,614 Florida homes in the wildland-urban interface and more than ten minutes from a fire station](day-07-10-minute-map/) ([story map](https://abenrob.github.io/30daymap2026/day-07-10-minute-map/)) |
+| 8 | Utopia | [283 places in the UK have "Utopia" in the name: adjusted for population, the Highlands beat London](day-08-utopia/) ([page](https://abenrob.github.io/30daymap2026/day-08-utopia/)) |
 
 ## Layout
 

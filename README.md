@@ -18,6 +18,7 @@ In day order. A row is added when the day is published.
 | 4 | Clusters | [Every building in Denmark grouped into settlements at 10 m: 4.16 million footprints in 5.3 minutes, inside Snowflake](day-04-clusters/) ([map](https://clausa.app.carto.com/map/c5aa833e-6180-4c49-891c-ba54a64e8455)) |
 | 5 | Senses: Sight | [What you can see from every point of the GR 738 across Belledonne](day-05-senses-sight/) ([video](https://abenrob.github.io/30daymap2026/day-05-senses-sight/)) |
 | 6 | Vintage | [Sixty years of the wine trade, on the borders of each year](day-06-vintage/) ([live page](https://abenrob.github.io/30daymap2026/day-06-vintage/)) |
+| 7 | 10 minute map | [177,614 Florida homes in the wildland-urban interface and more than ten minutes from a fire station](day-07-10-minute-map/) ([story map](https://abenrob.github.io/30daymap2026/day-07-10-minute-map/)) |
 
 ## Layout
 

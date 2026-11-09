@@ -20,6 +20,7 @@ In day order. A row is added when the day is published.
 | 6 | Vintage | [Sixty years of the wine trade, on the borders of each year](day-06-vintage/) ([live page](https://abenrob.github.io/30daymap2026/day-06-vintage/)) |
 | 7 | 10 minute map | [177,614 Florida homes in the wildland-urban interface and more than ten minutes from a fire station](day-07-10-minute-map/) ([story map](https://abenrob.github.io/30daymap2026/day-07-10-minute-map/)) |
 | 8 | Utopia | [283 places in the UK have "Utopia" in the name: adjusted for population, the Highlands beat London](day-08-utopia/) ([page](https://abenrob.github.io/30daymap2026/day-08-utopia/)) |
+| 9 | Urban-rural | [Same density, different class: two towns 8 km apart on the line from Paris to Chartres](day-09-urban-rural/) ([video](https://abenrob.github.io/30daymap2026/day-09-urban-rural/)) |
 
 ## Layout
 

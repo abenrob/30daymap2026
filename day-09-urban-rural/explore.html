@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paris to Chartres, interactive · Day 9</title>
+  <meta name="description" content="One 78 km line from Notre-Dame to Chartres cathedral, raised in turn by population, sealed ground and built volume, then coloured by the official Degree of Urbanisation class.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #0f1115; --ink: #f2f2f2; --quiet: #a1a1a6; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; overflow: hidden; }
+    #stage { position: fixed; inset: 0; }
+    canvas { display: block; }
+    .ov { position: absolute; pointer-events: none; }
+    #head { top: 4.2vmin; left: 4.5vmin; right: 4.5vmin; }
+    #kicker { font-size: 2.0vmin; color: var(--quiet); letter-spacing: .02em; }
+    #title { font-size: 4.0vmin; font-weight: 600; margin-top: .6vmin; line-height: 1.15; }
+    #cap { left: 4.5vmin; right: 4.5vmin; bottom: 15vmin; }
+    #shade { left: 0; right: 0; top: 0; height: 24vh; background: linear-gradient(#0f1115 35%, rgba(15,17,21,0)); }
+    #shade2 { left: 0; right: 0; bottom: 0; height: 36vh; background: linear-gradient(rgba(15,17,21,0), rgba(15,17,21,.85) 55%); }
+    #legend.two { display: grid; grid-template-columns: auto auto; column-gap: 6vmin; justify-content: start; }
+    #cap .name { font-size: 3.4vmin; font-weight: 600; line-height: 1.15; }
+    #cap .unit { font-size: 2.2vmin; color: var(--quiet); margin-top: .6vmin; }
+    #cap .swatch { display: inline-block; width: 3.2vmin; height: .7vmin; border-radius: .35vmin; vertical-align: middle; margin-right: 1.2vmin; transform: translateY(-.3vmin); }
+    #legend { margin-top: .4vmin; font-size: 2.2vmin; line-height: 1.7; }
+    #legend .row { white-space: nowrap; }
+    #foot { left: 4.5vmin; right: 4.5vmin; bottom: 3.6vmin; font-size: 1.65vmin; color: var(--quiet); line-height: 1.45; }
+    .lab { position: absolute; transform: translate(-50%, 0); font-size: 1.9vmin; color: #e9e9ea; text-shadow: 0 0 .6vmin #000, 0 0 .3vmin #000; white-space: nowrap; }
+    .lab::before { content: ""; position: absolute; left: 50%; top: -1.6vmin; height: 1.3vmin; border-left: 1px solid rgba(255,255,255,.55); }
+    #ui { position: absolute; left: 50%; bottom: 10vmin; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; pointer-events: auto; background: rgba(15,17,21,.75); padding: 6px 10px; border-radius: 8px; }
+    #ui button { background: none; border: 1px solid #555; color: var(--ink); border-radius: 6px; padding: 3px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+    #ui input { width: min(50vw, 420px); }
+    #ui a { color: var(--quiet); font-size: 13px; }
+    body.capture #ui { display: none; }
+  </style>
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="shade" class="ov"></div>
+  <div id="shade2" class="ov"></div>
+  <div id="labels" class="ov" style="inset:0"></div>
+  <div id="head" class="ov">
+    <div id="kicker">#30DayMapChallenge · Day 9 · Urban-rural</div>
+    <div id="title">Paris to Chartres, 78 km</div>
+  </div>
+  <div id="cap" class="ov"></div>
+  <div id="foot" class="ov">Data: GHSL (European Commission, JRC) · Copernicus HRL Imperviousness (EEA) · Orthophoto © IGN</div>
+  <div id="ui">
+    <button id="play">Pause</button>
+    <input id="scrub" type="range" min="0" max="1" step="0.001" value="0">
+    <a href="https://github.com/abenrob/30daymap2026/tree/main/day-09-urban-rural">code</a>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

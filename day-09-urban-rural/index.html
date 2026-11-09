@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paris to Chartres, urban to rural · Day 9</title>
+  <meta name="description" content="One 78 km line from Notre-Dame to Chartres cathedral, traced in turn by population, sealed ground and built volume, then coloured by the official Degree of Urbanisation class.">
+  <meta property="og:title" content="Same density, different class: two towns 8 km apart on the line from Paris to Chartres">
+  <meta property="og:description" content="Population, sealed ground and built volume along 78 km, against the official Degree of Urbanisation class.">
+  <meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-09-urban-rural/images/paris-chartres-finale.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 0 16px 40px; }
+    video { display: block; width: 100%; max-width: 560px; margin: 8px auto 16px; border-radius: 8px; background: #0f1115; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 8px 0 16px; }
+    td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+    td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="quiet"><a href="../">30DayMapChallenge 2026</a> · Day 9 · Urban-rural</div>
+    <h1>Same density, different class: two towns 8 km apart on the line from Paris to Chartres</h1>
+  </header>
+  <main>
+    <video src="images/day-09-urban-rural.mp4" poster="images/paris-chartres-finale.png" controls muted loop playsinline preload="metadata"></video>
+
+    <p>One straight line from Notre-Dame to Chartres cathedral, 78 km, averaged over a 3 km wide swath every kilometre. It is traced in turn by population, sealed ground and built volume, then coloured by the official Degree of Urbanisation class from GHS-SMOD. The finale lays the three measures over the class.
+    <a href="explore.html">Open the interactive version</a> to scrub through it.</p>
+
+    <p>The class is not a density threshold on its own. The method classes 1 km cells by density and by the cluster they are contiguous with, so Jouy-en-Josas and Magny-les-Hameaux, both near 1,400 people per km² in the swath, land on either side of a class boundary.</p>
+
+    <table>
+      <tr><th>km</th><th>Commune</th><th class="n">People/km²</th><th class="n">Sealed</th><th class="n">Built volume</th><th>Official class</th></tr>
+      <tr><td>3</td><td>Paris (peak)</td><td class="n">33,963</td><td class="n">87%</td><td class="n">9.16 m³/m²</td><td>Urban centre</td></tr>
+      <tr><td>10</td><td>Meudon</td><td class="n">2,041</td><td class="n">16%</td><td class="n">0.69</td><td>Urban centre</td></tr>
+      <tr><td>16</td><td>Jouy-en-Josas</td><td class="n">1,386</td><td class="n">16%</td><td class="n">0.49</td><td>Urban centre</td></tr>
+      <tr><td>24</td><td>Magny-les-Hameaux</td><td class="n">1,421</td><td class="n">20%</td><td class="n">0.52</td><td>Urban cluster</td></tr>
+      <tr><td>46</td><td>Sonchamp</td><td class="n">252</td><td class="n">11%</td><td class="n">0.27</td><td>Rural</td></tr>
+      <tr><td>61</td><td>Gallardon</td><td class="n">420</td><td class="n">11%</td><td class="n">0.31</td><td>Rural</td></tr>
+      <tr><td>77</td><td>Chartres</td><td class="n">2,391</td><td class="n">38%</td><td class="n">1.59</td><td>Urban centre</td></tr>
+      <tr><td>27 to 72</td><td>Chevreuse to Gasville-Oisème</td><td class="n">44 median</td><td class="n"></td><td class="n"></td><td>Rural, all 46 km</td></tr>
+    </table>
+
+    <p class="quiet">Each value is the mean over a window 1 km along the line and 3 km across. The class is the majority class by area in the window. Heights are the square root of each value's share of its maximum on the line; the communes are those at each window's centre.
+    Data: GHS-POP, GHS-BUILT-V and GHS-SMOD R2023A, epoch 2020, European Commission JRC (CC BY 4.0). Copernicus HRL Imperviousness Density 2018, © European Union, Copernicus Land Monitoring Service, EEA. Orthophoto IGN via the Géoplateforme (Licence Ouverte 2.0). Commune names from geo.api.gouv.fr.
+    Method, numbers and scripts: <a href="https://github.com/abenrob/30daymap2026/tree/main/day-09-urban-rural">README and code on GitHub</a>.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+# Deploy the site to GitHub Pages without the heavy media.
+# Videos and GIFs stay in git (the READMEs link them on GitHub), but they are
+# removed from the Pages artifact. Pages that play a video load it from jsDelivr,
+# which serves files straight from this repo with the right MIME type:
+#   https://cdn.jsdelivr.net/gh/abenrob/30daymap2026@main/<path>
+# Requires Settings > Pages > Source: GitHub Actions.
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Drop media and source-only files from the artifact
+        run: |
+          find . -path ./.git -prune -o -type f \( -iname '*.mp4' -o -iname '*.gif' -o -iname '*.mov' \) -print -delete
+          rm -rf .github
+          du -sh --exclude=.git .
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

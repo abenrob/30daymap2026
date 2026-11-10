@@ -1,0 +1,162 @@
+{
+ "title": "Day 10 Dinner in Paris: hotel to restaurant walking routes",
+ "description": "Pedestrian routes (LDS) from each of 8 Paris hotels to every TripAdvisor restaurant inside its 15 min H3 walk isochrone, with text directions.",
+ "tags": [
+  "30daymapchallenge"
+ ],
+ "connectionId": "26be8d96-a1a3-4064-9d44-2b2d8b6ce49f",
+ "privacy": {
+  "privacy": "private"
+ },
+ "config": {
+  "schemaVersion": "1.0.0",
+  "connectionProvider": "bigquery",
+  "nodes": [
+   {
+    "id": "src",
+    "type": "source",
+    "position": {
+     "x": 80,
+     "y": 160
+    },
+    "data": {
+     "name": "ReadTable",
+     "label": "OD pairs",
+     "id": "cartodb-on-gcp-cs-team.paris_restaurants.od_pairs",
+     "version": "1",
+     "inputs": [
+      {
+       "name": "source",
+       "type": "String",
+       "title": "Source table",
+       "description": "Read Table",
+       "value": "cartodb-on-gcp-cs-team.paris_restaurants.od_pairs"
+      }
+     ]
+    }
+   },
+   {
+    "id": "routes",
+    "type": "generic",
+    "position": {
+     "x": 352,
+     "y": 160
+    },
+    "data": {
+     "name": "native.createroutes",
+     "title": "Walk routes",
+     "label": "Create Routes",
+     "version": "1",
+     "inputs": [
+      {
+       "name": "source",
+       "type": "Table",
+       "title": "Source table",
+       "description": "Source table",
+       "value": ""
+      },
+      {
+       "name": "origin",
+       "type": "Column",
+       "title": "Origin column",
+       "description": "Origin column",
+       "value": "origin"
+      },
+      {
+       "name": "destination",
+       "type": "Column",
+       "title": "Destination column",
+       "description": "Destination column",
+       "value": "destination"
+      },
+      {
+       "name": "newcol",
+       "type": "String",
+       "title": "Name for column with routes",
+       "description": "Name for column with routes",
+       "value": "geom"
+      },
+      {
+       "name": "mode",
+       "type": "Selection",
+       "title": "Type of transport",
+       "description": "Type of transport",
+       "value": "Pedestrian"
+      },
+      {
+       "name": "customoptions",
+       "type": "String",
+       "title": "Routing options",
+       "description": "Routing options",
+       "value": "{\"instructionsType\":\"text\",\"language\":\"en-GB\"}"
+      }
+     ]
+    }
+   },
+   {
+    "id": "save",
+    "type": "generic",
+    "position": {
+     "x": 496,
+     "y": 160
+    },
+    "data": {
+     "name": "native.saveastable",
+     "title": "Save routes",
+     "label": "Save as Table",
+     "version": "1",
+     "inputs": [
+      {
+       "name": "source",
+       "type": "Table",
+       "title": "Source table",
+       "description": "Source table",
+       "value": ""
+      },
+      {
+       "name": "destination",
+       "type": "OutputTable",
+       "title": "Table details",
+       "description": "Table details",
+       "value": "cartodb-on-gcp-cs-team.paris_restaurants.routes"
+      },
+      {
+       "name": "append",
+       "type": "Boolean",
+       "title": "Append to existing table",
+       "description": "Append to existing table",
+       "value": false
+      },
+      {
+       "name": "optimizationcol",
+       "type": "Column",
+       "title": "Cluster by",
+       "description": "Cluster by",
+       "value": "hotel_id"
+      }
+     ]
+    }
+   }
+  ],
+  "edges": [
+   {
+    "id": "e1",
+    "source": "src",
+    "target": "routes",
+    "sourceHandle": "out",
+    "targetHandle": "source",
+    "type": "default"
+   },
+   {
+    "id": "e2",
+    "source": "routes",
+    "target": "save",
+    "sourceHandle": "result",
+    "targetHandle": "source",
+    "type": "default"
+   }
+  ],
+  "variables": [],
+  "useCache": true
+ }
+}

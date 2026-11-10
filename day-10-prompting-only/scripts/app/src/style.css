@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'Dinner Mono';
+  src: url('./fonts/DinnerMono.woff2') format('woff2');
+  font-weight: 400;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Dinner Mono';
+  src: url('./fonts/DinnerMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: block;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #0e0a04;
+  overflow: hidden;
+}
+#term {
+  position: absolute;
+  inset: 12px;
+}
+/* phosphor glow and scanlines */
+#term .xterm-screen { filter: drop-shadow(0 0 2px rgba(255, 176, 0, 0.35)); }
+body::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0.18) 3px);
+  mix-blend-mode: multiply;
+}
+.fatal {
+  position: fixed; left: 24px; bottom: 24px;
+  color: #ff6e46; font: 14px 'Dinner Mono', monospace;
+}

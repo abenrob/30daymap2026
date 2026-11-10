@@ -27,10 +27,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Drop media and source-only files from the artifact
         run: |
-          find . -path ./.git -prune -o -type f \( -iname '*.mp4' -o -iname '*.gif' -o -iname '*.mov' \) -print -delete
+          find . -type f \( -iname '*.mp4' -o -iname '*.gif' -o -iname '*.mov' \) -not -path './.git/*' -print -delete
           rm -rf .github
           du -sh --exclude=.git .
       - uses: actions/configure-pages@v5

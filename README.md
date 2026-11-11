@@ -22,6 +22,7 @@ In day order. A row is added when the day is published.
 | 8 | Utopia | [283 places in the UK have "Utopia" in the name: adjusted for population, the Highlands beat London](day-08-utopia/) ([page](https://abenrob.github.io/30daymap2026/day-08-utopia/)) |
 | 9 | Urban-rural | [Same density, different class: two towns 8 km apart on the line from Paris to Chartres](day-09-urban-rural/) ([video](https://abenrob.github.io/30daymap2026/day-09-urban-rural/)) |
 | 10 | Prompting only | [Dinner in Paris: a 1980s-style text adventure over 16,384 restaurants, built by prompting only](day-10-prompting-only/) ([live page](https://abenrob.github.io/30daymap2026/day-10-prompting-only/)) |
+| 11 | Senses: Sound | [About 20 people at the Vogue, 30,000 at Magnuson Park: Seattle's grunge years, mapped show by show](day-11-senses-sound/) ([story map](https://abenrob.github.io/30daymap2026/day-11-senses-sound/)) |
 
 ## Layout
 

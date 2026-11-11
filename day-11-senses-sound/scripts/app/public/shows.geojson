@@ -1,0 +1,416 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3431037,
+     47.611707
+    ]
+   },
+   "properties": {
+    "step": 1,
+    "venueName": "The Vogue",
+    "address": "2018 1st Ave",
+    "venue": "vogue",
+    "date": "1988-04-24",
+    "dateLabel": "24 April 1988",
+    "bands": "Nirvana",
+    "title": "A bad first night",
+    "text": "Nirvana's first Seattle gig, a Sub Pop Sunday booked by Jonathan Poneman. About twenty people came, the PA broke down, and Kurt Cobain said later: “We totally sucked.”",
+    "why": "Every scene story needs a bad first night. Seven months later Sub Pop put out Nirvana's first single, “Love Buzz”.",
+    "video": {
+     "id": "iivXwCFHt-E",
+     "start": 0,
+     "label": "Nirvana back at the Vogue a year later, 21 June 1989: “Aero Zeppelin” (fan audio)",
+     "short": "Nirvana at the Vogue, June 1989"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3344038,
+     47.6006031
+    ]
+   },
+   "properties": {
+    "step": 2,
+    "venueName": "Central Tavern",
+    "address": "207 1st Ave S",
+    "venue": "central",
+    "date": "1988-06-05",
+    "dateLabel": "5 June 1988",
+    "bands": "Nirvana",
+    "title": "The audition",
+    "text": "Nirvana opened a Sunday bill at the Pioneer Square tavern. Sub Pop's founders, Bruce Pavitt and Jonathan Poneman, came after hearing the band's demo.",
+    "why": "The show that led to Nirvana's deal with Sub Pop.",
+    "image": {
+     "src": "images/central-tavern-1970s.jpg",
+     "pos": "center 78%",
+     "credit": "Central Tavern in the 1970s. Seattle Municipal Archives, CC BY 2.0",
+     "href": "https://commons.wikimedia.org/wiki/File:Seattle_-_Central_Tavern,_1970s_(53502918631)_(cropped).jpg"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.312967,
+     47.6618524
+    ]
+   },
+   "properties": {
+    "step": 3,
+    "venueName": "The Underground",
+    "address": "4518 University Way NE",
+    "venue": "underground",
+    "date": "1988-12-28",
+    "dateLabel": "28 December 1988",
+    "bands": "Nirvana and Sub Pop bands",
+    "title": "Sub Pop 200",
+    "text": "The release party for <i>Sub Pop 200</i>, a three-record box with Nirvana, Mudhoney, Soundgarden, TAD, Green River, Screaming Trees and more, wrapped in Charles Peterson's photographs.",
+    "why": "The label's statement of intent: a whole local scene packaged as one sound.",
+    "note": "Venue address from a single source.",
+    "video": {
+     "id": "_v0FiNqFiqY",
+     "start": 0,
+     "label": "Nirvana at the party, fan video",
+     "short": "Nirvana at the party"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3414253,
+     47.6117307
+    ]
+   },
+   "properties": {
+    "step": 4,
+    "venueName": "Moore Theatre",
+    "address": "1932 2nd Ave",
+    "venue": "moore",
+    "date": "1989-06-09",
+    "dateLabel": "9 June 1989",
+    "bands": "TAD, Nirvana, Mudhoney",
+    "title": "Lame Fest ’89",
+    "text": "Sub Pop put three of its bands on one bill in a 1907 vaudeville theatre downtown. The sound was bad; Cobain dove into the drum kit.",
+    "why": "The scene moved out of the taverns and onto a real stage.",
+    "video": {
+     "id": "RTg2OJwxxuE",
+     "start": 0,
+     "label": "Nirvana, “Floyd the Barber”, fan video",
+     "short": "“Floyd the Barber”"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3344038,
+     47.6006031
+    ]
+   },
+   "properties": {
+    "step": 5,
+    "venueName": "Central Tavern",
+    "address": "207 1st Ave S",
+    "venue": "central",
+    "date": "1990-03-09",
+    "dateLabel": "9 March 1990",
+    "bands": "Mother Love Bone",
+    "title": "The last Mother Love Bone show",
+    "text": "Mother Love Bone, the band the town expected to break first, played its final show at the Central. Singer Andrew Wood died of an overdose ten days later, before their debut album, <i>Apple</i>, came out.",
+    "why": "Wood's death split the band. Stone Gossard and Jeff Ament went on to form Pearl Jam, and Chris Cornell wrote the songs that became Temple of the Dog.",
+    "video": {
+     "id": "MBAdbU1x9K4",
+     "start": 0,
+     "label": "Mother Love Bone at the Central two months earlier, 6 January 1990 (fan audio, full show)",
+     "poster": {
+      "src": "images/central-tavern-1970s.jpg",
+      "pos": "center 78%",
+      "credit": "Central Tavern in the 1970s. Seattle Municipal Archives, CC BY 2.0",
+      "href": "https://commons.wikimedia.org/wiki/File:Seattle_-_Central_Tavern,_1970s_(53502918631)_(cropped).jpg"
+     },
+     "short": "Mother Love Bone, January 1990"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3293154,
+     47.6187293
+    ]
+   },
+   "properties": {
+    "step": 6,
+    "venueName": "Off Ramp Café",
+    "address": "109 Eastlake Ave E",
+    "venue": "offramp",
+    "date": "1990-10-22",
+    "dateLabel": "22 October 1990",
+    "bands": "Mookie Blaylock (Pearl Jam)",
+    "title": "Pearl Jam's first show",
+    "text": "Fifteen days after they first played together, Gossard, Ament, Mike McCready, Dave Krusen and a new singer from San Diego, Eddie Vedder, opened at the Off Ramp as Mookie Blaylock. About 300 people saw it.",
+    "why": "Chris Cornell called it “absolutely the best inaugural show I've seen in my life.” Ten months later <i>Ten</i> was out.",
+    "video": {
+     "id": "v8YV5KeHo9o",
+     "start": 0,
+     "label": "Full show, fan video (no single-song clip exists)",
+     "short": "Pearl Jam's first show"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3293154,
+     47.6187293
+    ]
+   },
+   "properties": {
+    "step": 7,
+    "venueName": "Off Ramp Café",
+    "address": "109 Eastlake Ave E",
+    "venue": "offramp",
+    "date": "1990-11-13",
+    "dateLabel": "13 November 1990",
+    "bands": "Temple of the Dog",
+    "title": "A tribute, played once",
+    "text": "Chris Cornell's tribute to Andrew Wood, with Soundgarden's Matt Cameron and the band about to become Pearl Jam, played its only full show back at the Off Ramp.",
+    "why": "The album came out in April 1991 and only became a hit after Pearl Jam broke, with Cornell and Vedder trading lines on “Hunger Strike”.",
+    "video": {
+     "id": "l79Mxit8WiM",
+     "start": 0,
+     "label": "“Pushin’ Forward Back”, fan video",
+     "short": "“Pushin’ Forward Back”"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3414253,
+     47.6117307
+    ]
+   },
+   "properties": {
+    "step": 8,
+    "venueName": "Moore Theatre",
+    "address": "1932 2nd Ave",
+    "venue": "moore",
+    "date": "1990-12-22",
+    "dateLabel": "22 December 1990",
+    "bands": "Alice in Chains, Mookie Blaylock",
+    "title": "Live Facelift",
+    "text": "Alice in Chains filmed a hometown show for the home video <i>Live Facelift</i>. Mookie Blaylock opened and played “Why Go” and “Porch” for the first time; Cornell and Cameron joined them for “Hunger Strike” and “Say Hello 2 Heaven”.",
+    "why": "Two of the scene's biggest bands on one bill, before Pearl Jam even had its name.",
+    "video": {
+     "id": "Py8ghIjNWW8",
+     "start": 0,
+     "label": "Alice in Chains, “Man in the Box”",
+     "short": "“Man in the Box”"
+    },
+    "listen": {
+     "id": "zWjpjoZHbC4",
+     "label": "Mookie Blaylock, “Alive”, same night, official audio"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.335372,
+     47.6004499
+    ]
+   },
+   "properties": {
+    "step": 9,
+    "venueName": "OK Hotel",
+    "address": "212 Alaskan Way S",
+    "venue": "okhotel",
+    "date": "1991-04-17",
+    "dateLabel": "17 April 1991",
+    "bands": "Nirvana, Fits of Depression, Bikini Kill",
+    "title": "A new song",
+    "text": "Nirvana introduced themselves as “major corporate rock sell-outs” and played a song with half-finished lyrics: “Smells Like Teen Spirit”.",
+    "why": "Its first performance anywhere. A few weeks later the band went to Los Angeles to record <i>Nevermind</i>.",
+    "video": {
+     "id": "Yp2cm3fSFfI",
+     "start": 0,
+     "label": "“Smells Like Teen Spirit”, fan video",
+     "poster": {
+      "src": "images/ok-hotel-poster-1991.png",
+      "pos": "center",
+      "credit": "The poster for the night. Public domain, via Wikimedia Commons",
+      "href": "https://commons.wikimedia.org/wiki/File:OK_Hotel_concert_poster_-_April_17,_1991.png"
+     },
+     "short": "“Smells Like Teen Spirit”"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.331073,
+     47.6166458
+    ]
+   },
+   "properties": {
+    "step": 10,
+    "venueName": "Re-bar",
+    "address": "1114 Howell St",
+    "venue": "rebar",
+    "date": "1991-09-13",
+    "dateLabel": "13 September 1991",
+    "bands": "Nirvana",
+    "title": "The release party",
+    "text": "Bruce Pavitt DJed the <i>Nevermind</i> release party at a dance club on Howell Street. The band was thrown out after a food fight, and the state Liquor Control Board turned up.",
+    "why": "Nirvana's last night as a local band. Eleven days later <i>Nevermind</i> was in the shops."
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.331356,
+     47.6132449
+    ]
+   },
+   "properties": {
+    "step": 11,
+    "venueName": "Paramount Theatre",
+    "address": "911 Pine St",
+    "venue": "paramount",
+    "date": "1991-10-31",
+    "dateLabel": "31 October 1991",
+    "bands": "Nirvana, Mudhoney, Bikini Kill",
+    "title": "Halloween at the Paramount",
+    "text": "A Halloween homecoming with Mudhoney and Bikini Kill. The label filmed the whole show; some of the footage went into the “Lithium” video.",
+    "why": "Six months after the OK Hotel, <i>Nevermind</i> was out and the same band filled a 2,800-seat theatre.",
+    "video": {
+     "id": "35Y8VJAaDos",
+     "start": 0,
+     "label": "“Aneurysm”, from the DGC film",
+     "short": "“Aneurysm”"
+    },
+    "listen": {
+     "id": "zucJHYwi2Uc",
+     "label": "“Smells Like Teen Spirit” from the same night, official"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.331356,
+     47.6132449
+    ]
+   },
+   "properties": {
+    "step": 12,
+    "venueName": "Paramount Theatre",
+    "address": "911 Pine St",
+    "venue": "paramount",
+    "date": "1992-03-06",
+    "dateLabel": "March 1992",
+    "bands": "Soundgarden",
+    "title": "Motorvision",
+    "text": "Soundgarden, whose <i>Screaming Life</i> was among Sub Pop's first records, filmed the concert video <i>Motorvision</i> over two Paramount nights on the <i>Badmotorfinger</i> tour.",
+    "why": "The scene's elders, now on a major label, headlining downtown.",
+    "video": {
+     "id": "8ChIpzH31gQ",
+     "start": 0,
+     "label": "“Searching with My Good Eye Closed”, from <i>Motorvision</i>",
+     "short": "“Searching with My Good Eye Closed”"
+    },
+    "listen": {
+     "id": "V3EttDktlQE",
+     "label": "“Rusty Cage”, official audio"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.2544428,
+     47.6795175
+    ]
+   },
+   "properties": {
+    "step": 13,
+    "venueName": "Magnuson Park",
+    "address": "Sand Point",
+    "venue": "magnuson",
+    "date": "1992-09-20",
+    "dateLabel": "20 September 1992",
+    "bands": "Pearl Jam",
+    "title": "Drop in the Park",
+    "text": "Fresh off Lollapalooza with a gold record, Pearl Jam played a free, ticketed show for about 30,000 people at Magnuson Park. Around 3,000 registered to vote.",
+    "why": "Two years after 300 people at the Off Ramp.",
+    "video": {
+     "id": "AumGmvOHr_4",
+     "start": 0,
+     "label": "Full show, remastered fan upload (single-song uploads are blocked from embedding)",
+     "short": "Drop in the Park, full show"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3442805,
+     47.6135891
+    ]
+   },
+   "properties": {
+    "step": 14,
+    "venueName": "Crocodile Cafe",
+    "address": "2200 2nd Ave",
+    "venue": "crocodile",
+    "date": "1992-10-04",
+    "dateLabel": "4 October 1992",
+    "bands": "Nirvana (as Pen Cap Chew), Mudhoney",
+    "title": "Back in a club",
+    "text": "<i>Nevermind</i> had topped the Billboard chart in January. Nirvana opened for Mudhoney unannounced, skipped the hits, and played “Frances Farmer Will Have Her Revenge on Seattle” and “Very Ape” live for the first time.",
+    "why": "The biggest band in the world back in a Belltown club, playing the songs that would become <i>In Utero</i>.",
+    "video": {
+     "id": "ynngkdbGsfY",
+     "start": 0,
+     "label": "“Talk to Me”",
+     "short": "“Talk to Me”"
+    }
+   }
+  }
+ ]
+}

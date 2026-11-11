@@ -1,0 +1,21 @@
+{
+  "name": "seattle-sound",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@deck.gl/core": "9.1.14",
+    "@deck.gl/layers": "9.1.14",
+    "@deck.gl/mapbox": "9.1.14",
+    "maplibre-gl": "5.6.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  }
+}

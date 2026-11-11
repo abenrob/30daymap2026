@@ -43,7 +43,7 @@ carto credentials create token --name paris-restaurants --apis sql \
   --connection cs_bigquery --source "<hotels query>" \
   --connection cs_bigquery --source "<h3 query>" \
   ... one --connection/--source pair per query in src/carto.ts ...
-  --referers 'http://localhost:5173*,https://abenrob.github.io/30daymap2026/*'
+  --referers 'http://localhost:5173*,https://abenrob.github.io/*'
 ```
 
 A query grant matches the SQL text exactly (whitespace and case aside), so the queries in `src/carto.ts` are constants and every input is a named parameter (`@hotel`, `@cuisine`, ...). Change a query and the token needs a new grant.

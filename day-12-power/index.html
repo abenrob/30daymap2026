@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Day Iberia Went Dark</title>
+<meta name="description" content="Modelled hourly power flows on 3,346 transmission lines in Spain, Portugal and France through the blackout of 28 April 2025, calibrated to measured border and demand data.">
+<meta property="og:title" content="The Day Iberia Went Dark">
+<meta property="og:description" content="Hour by hour, the Spanish, Portuguese and French grid through the blackout of 28 April 2025. Modelled flows on the real network, calibrated to measured data.">
+<meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-12-power/images/preview.png">
+<meta property="og:url" content="https://abenrob.github.io/30daymap2026/day-12-power/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map"></div>
+<a class="back" href="../">‹ 30 Day Map Challenge 2026</a>
+
+<section class="panel" id="panel">
+  <div class="kicker">Day 12 · Power</div>
+  <h1>The Day Iberia Went Dark</h1>
+  <p class="dek">Power flowing on 3,346 transmission lines in Spain, Portugal and France, hour by hour through the blackout of 28 April 2025.</p>
+  <div class="clock">
+    <div class="date" id="date">Fri 25 Apr</div>
+    <div class="time" id="time">02:00</div>
+    <div class="tz">CEST</div>
+  </div>
+  <div class="note" id="note"></div>
+  <dl class="stats">
+    <div><dt>Spain demand</dt><dd id="s-es">–</dd></div>
+    <div><dt>Portugal demand</dt><dd id="s-pt">–</dd></div>
+    <div><dt id="l-fr">Spain → France</dt><dd id="s-fr">–</dd></div>
+    <div><dt id="l-ptx">Spain → Portugal</dt><dd id="s-ptx">–</dd></div>
+  </dl>
+</section>
+
+<section class="timeline">
+  <div class="controls">
+    <button id="play" aria-label="Play">Play</button>
+    <button id="jump">Jump to 28 April</button>
+    <div class="speed" id="speed"><button data-s="1400">Slow</button><button data-s="600" class="on">Normal</button><button data-s="220">Fast</button></div>
+  </div>
+  <svg id="chart" role="img" aria-label="Demand in Spain and Portugal over the week, with the current hour marked"></svg>
+  <input type="range" id="slider" min="0" max="191" step="1" value="0" aria-label="Hour">
+</section>
+
+<section class="legend">
+  <div class="row"><span class="pulse"></span>Moving dashes: direction of flow; thicker, faster and brighter with more MW</div>
+  <div class="row"><span class="ramp"></span>Loading: 0 → 50%+ of thermal rating</div>
+  <div class="row"><span class="hvdc"></span>HVDC link (flow set from measurements)</div>
+  <div class="row"><span class="idle"></span>Network (under 10 MW: no dashes)</div>
+  <button class="about-btn" id="about-btn">About this map</button>
+</section>
+
+<div class="about" id="about" hidden>
+  <div class="about-card">
+    <button class="close" id="about-close" aria-label="Close">×</button>
+    <h2>Modelled, not metered</h2>
+    <p>No operator publishes hourly flows for every line, so these are modelled with a DC power flow on the real network topology. The inputs are measured: hourly demand and generation by fuel for each country, and the physical flow across each border. Each country's net export matches the measured border totals; how that flow splits across parallel lines, and anything deep inside a country, depends on where the model places demand and generation, and is indicative only.</p>
+    <p>A DC power flow ignores voltage and reactive power, and the blackout was a voltage event. This map shows where active power went before, during and after. It says nothing about why the grid fell, and makes no claim about cause or responsibility. For that, read the <a href="https://www.entsoe.eu/publications/blackout/28-april-2025-Iberian-blackout/">ENTSO-E expert panel report</a>.</p>
+    <p>Hourly averages hide the collapse itself, which took seconds at 12:33 CEST. The 12:00 hour blends the last normal half hour with the first minutes of the blackout.</p>
+    <p><b>Data.</b> Demand, generation and border flows: <a href="https://energy-charts.info">Energy-Charts</a> (Fraunhofer ISE, CC BY 4.0). Spanish demand and per-line interconnector flows during the blackout: <a href="https://www.ree.es/en/apidatos">REE REData</a>. France: <a href="https://odre.opendatasoft.com/explore/dataset/eco2mix-national-cons-def/">RTE eCO2mix</a> via ODRÉ (Licence Ouverte). Energy-Charts shows no France–Spain flow from 13:00 on 28 April to 23:00 on 29 April; those hours use RTE's schedules, which match REE's measured daily totals within 3%. Network: <a href="https://doi.org/10.5281/zenodo.14144752">OSM prebuilt grid for PyPSA-Eur</a> (© OpenStreetMap contributors, ODbL). Plant locations: <a href="https://github.com/PyPSA/powerplantmatching">powerplantmatching</a>. Population: Natural Earth. Basemap © CARTO, © OpenStreetMap contributors.</p>
+    <p><a href="https://github.com/abenrob/30daymap2026/tree/main/day-12-power">Method, code and validation</a></p>
+  </div>
+</div>
+
+<div class="credit">Modelled flows · Energy-Charts (CC BY 4.0), REE, RTE · Grid © OpenStreetMap (ODbL) · © CARTO</div>
+
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@8.9.36/dist.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

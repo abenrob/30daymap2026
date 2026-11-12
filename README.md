@@ -23,6 +23,7 @@ In day order. A row is added when the day is published.
 | 9 | Urban-rural | [Same density, different class: two towns 8 km apart on the line from Paris to Chartres](day-09-urban-rural/) ([video](https://abenrob.github.io/30daymap2026/day-09-urban-rural/)) |
 | 10 | Prompting only | [Dinner in Paris: a 1980s-style text adventure over 16,384 restaurants, built by prompting only](day-10-prompting-only/) ([live page](https://abenrob.github.io/30daymap2026/day-10-prompting-only/)) |
 | 11 | Senses: Sound | [About 20 people at the Vogue, 30,000 at Magnuson Park: Seattle's grunge years, mapped show by show](day-11-senses-sound/) ([story map](https://abenrob.github.io/30daymap2026/day-11-senses-sound/)) |
+| 12 | Power | [Spain's demand fell from 25.4 GW to 518 MW in one hour: the Iberian blackout on 3,346 transmission lines](day-12-power/) ([live page](https://abenrob.github.io/30daymap2026/day-12-power/)) |
 
 ## Layout
 

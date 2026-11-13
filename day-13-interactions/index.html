@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where France Commutes</title>
+<meta name="description" content="Commuting as spatial interaction: pick a French commune and watch where its residents go to work, and where its workers come from. INSEE census 2022, read from Parquet in the browser.">
+<meta property="og:title" content="Where France Commutes">
+<meta property="og:description" content="Pick a French commune and watch where its residents go to work, and where its workers come from. 28.4 million workers, INSEE census 2022.">
+<meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-13-interactions/images/preview.png">
+<meta property="og:url" content="https://abenrob.github.io/30daymap2026/day-13-interactions/">
+<meta property="og:type" content="website">
+<!-- Day 13 · Interactions. Layout: header (title, both-direction summary, toggle, search),
+     map (deck.gl canvas), chart (top flows). Logic in app.js, data in web/. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/deck.gl@9.1.14/dist.min.js"></script>
+</head>
+<body>
+<header class="head">
+  <a class="back" href="../">‹ 30 Day Map Challenge 2026</a>
+  <div class="kicker">Day 13 · Interactions · Commuting in France, census 2022</div>
+  <h1 id="title">Where France Commutes</h1>
+  <p class="dek" id="dek">Loading…</p>
+  <div class="controls">
+    <div class="toggle" role="tablist">
+      <button id="b-out" class="on" data-dir="0">Where residents work</button>
+      <button id="b-in" data-dir="1">Where workers come from</button>
+    </div>
+    <div class="search">
+      <input id="q" type="search" placeholder="Find a commune…" autocomplete="off" spellcheck="false">
+      <ul id="hits" hidden></ul>
+    </div>
+  </div>
+</header>
+
+<main class="map" id="map"><div class="tooltip" id="tip" hidden></div></main>
+
+<aside class="chart">
+  <div class="chart-title" id="c-title"></div>
+  <dl class="stats">
+    <div><dt>Employed residents</dt><dd id="s-res">–</dd></div>
+    <div><dt>Jobs</dt><dd id="s-jobs">–</dd></div>
+    <div><dt>Jobs per resident</dt><dd id="s-ratio">–</dd></div>
+    <div><dt>Live and work here</dt><dd id="s-stay">–</dd></div>
+  </dl>
+  <ol class="bars" id="bars"></ol>
+  <div class="foot" id="foot"></div>
+  <div class="query" id="query"></div>
+  <div class="credit">INSEE, Mobilités professionnelles 2022 · Etalab contours administratifs 2025 (IGN Admin Express, OSM), ODbL · Foreign places: Nominatim, © OpenStreetMap contributors</div>
+</aside>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

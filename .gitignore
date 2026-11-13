@@ -87,3 +87,6 @@ data/
 *.mov
 renders/
 *.env
+
+# Day 13 reads Parquet straight from Pages with range requests
+!day-13-interactions/web/*.parquet

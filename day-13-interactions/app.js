@@ -10,7 +10,8 @@
 //   web/communes.parquet  commune and arrondissement outlines, GeoArrow-native geometry (~2.9 MB).
 //   web/flows.parquet     every INSEE flow written twice, once under each end, sorted by commune.
 //                         A click reads only that commune's rows with one HTTP range request
-//                         (hyparquet), typically 50 to 100 KB out of 10 MB.
+//                         (hyparquet), typically 50 to 100 KB out of 10 MB. On the live site it is
+//                         read from raw.githubusercontent.com (see FLOWS_URL below).
 //
 // Drawing (deck.gl 9, no basemap): faint commune outlines, nodes at centroids, and flat curved
 // arcs whose pulses run from home to workplace (FlowArcLayer, a small shader injection).
@@ -82,16 +83,22 @@ const deckgl = new Deck({
 });
 
 // ---------- data ----------
+// GitHub Pages gzips application/octet-stream on the fly whenever the browser accepts gzip (it always
+// does), and byte ranges then apply to the gzipped stream, which breaks range reads. So:
+//  - places and communes are downloaded whole (the browser undoes the gzip) and parsed in memory;
+//  - flows, the only file read by range, comes from raw.githubusercontent.com on the live site,
+//    which serves the same file from the repo uncompressed, with ranges and CORS.
+const FLOWS_URL = location.hostname.endsWith('github.io')
+  ? 'https://raw.githubusercontent.com/abenrob/30daymap2026/main/day-13-interactions/web/flows.parquet'
+  : 'web/flows.parquet';
+const wholeFile = (url) => fetch(url).then((r) => { if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`); return r.arrayBuffer(); });
 // Wraps an async buffer to count the range requests and bytes a read makes (shown under the chart).
 function counting(buf, stats) {
   return { byteLength: buf.byteLength, slice(s, e) { stats.reqs++; stats.bytes += (e ?? buf.byteLength) - s; return buf.slice(s, e); } };
 }
 
 async function load() {
-  const [pFile, cFile] = await Promise.all([
-    asyncBufferFromUrl({ url: 'web/places.parquet' }),
-    asyncBufferFromUrl({ url: 'web/communes.parquet' }),
-  ]);
+  const [pFile, cFile] = await Promise.all([wholeFile('web/places.parquet'), wholeFile('web/communes.parquet')]);
   const [pRows, cRows] = await Promise.all([
     parquetReadObjects({ file: pFile, compressors }),
     parquetReadObjects({ file: cFile, compressors }),
@@ -111,7 +118,7 @@ async function load() {
   searchList = places.filter((p) => p.country === 'FR' && p.flow_len && p.residents > 0)
     .map((p) => ({ p, k: norm(p.name) })).sort((a, b) => b.p.residents - a.p.residents);
   searchList.norm = norm;
-  flowsFile = await asyncBufferFromUrl({ url: 'web/flows.parquet' });
+  flowsFile = await asyncBufferFromUrl({ url: FLOWS_URL });
   flowsMeta = await parquetMetadataAsync(flowsFile);
   const [code, d] = location.hash.slice(1).split('/');
   await select(placeByCode.has(code) ? code : '38185', d === 'in' ? 1 : 0, false);

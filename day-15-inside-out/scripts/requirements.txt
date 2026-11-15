@@ -1,0 +1,6 @@
+numpy
+rasterio
+matplotlib
+scipy
+requests
+# Blender 4.x/5.x for step 3 (or: pip install bpy)

@@ -1,0 +1,14 @@
+id,x_l93,y_l93,group,bdtopo_id,status,bdtopo_height_m,lat,lon,model,hub_height_m,rotor_diameter_m,note
+T01,851929.2,6399630.6,East group (farm name unconfirmed),CONSPONC0000002244652933,En service,100,44.679186,4.917261,unknown (BD TOPO height 100 m),,,specs unknown
+T02,851869.5,6399181.6,East group (farm name unconfirmed),CONSPONC0000002244652942,En service,100,44.675158,4.91637,unknown (BD TOPO height 100 m),,,specs unknown
+T03,848224.5,6398698.0,West pair (Teissonnière or remaining V80s?),CONSPONC0000000334276503,En service,107.3,44.671592,4.870248,"unknown (BD TOPO tip 107.3 m, consistent with V80)",67.0,80.0,assumed V80; confirm
+T04,852091.7,6399393.7,East group (farm name unconfirmed),CONSPONC0000002244652938,En service,100,44.677018,4.919238,unknown (BD TOPO height 100 m),,,specs unknown
+T05,848110.2,6398519.8,West pair (Teissonnière or remaining V80s?),CONSPONC0000000334276501,En service,107.3,44.670013,4.868754,"unknown (BD TOPO tip 107.3 m, consistent with V80)",67.0,80.0,assumed V80; confirm
+T06,851634.9,6399405.6,East group (farm name unconfirmed),CONSPONC0000002244652944,En service,100,44.677225,4.913479,unknown (BD TOPO height 100 m),,,specs unknown
+T07,851551.2,6399116.5,East group (farm name unconfirmed),CONSPONC0000002244652947,En service,100,44.674642,4.912335,unknown (BD TOPO height 100 m),,,specs unknown
+T08,848477.0,6398612.0,Marsanne repowering,CONSPONC0000002499872135,En construction,,44.670764,4.873407,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm
+T09,848680.0,6398611.0,Marsanne repowering,CONSPONC0000002499872136,En construction,,44.670712,4.875968,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm
+T10,848880.0,6398602.0,Marsanne repowering,CONSPONC0000002499872137,En construction,,44.670588,4.878487,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm
+T11,848468.0,6399089.0,Marsanne repowering,CONSPONC0000002499872138,En construction,,44.675059,4.873437,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm
+T12,848674.2,6399304.8,Marsanne repowering,CONSPONC0000002499872139,En construction,,44.676958,4.876102,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm
+T13,848886.0,6399454.0,Marsanne repowering,CONSPONC0000002499922609,En construction,,44.678255,4.878819,Vestas V117,90.0,117.0,hub ~90 m inferred from 150 m tip; confirm

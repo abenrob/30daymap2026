@@ -1,0 +1,84 @@
+# Shadow flicker model configuration
+site:
+  name: Marsanne ridge (Drome) - repowered farm
+  lat: 44.68    
+  lon: 4.88     
+  crs: EPSG:2154  # Lambert-93 (model grid CRS, metres)
+
+time:
+  year: 2025
+  step_minutes: 1      # computation in UTC
+  # day index = UTC calendar day
+
+params:
+  min_sun_elevation_deg: 3.0
+  max_distance_diameters: 10.0
+  observer_height_m: 1.5
+  rotor_model: sphere          # sphere of radius R=rotor_diameter/2 centred on hub
+  default_overhang_m: 6.0      # hub offset toward sun azimuth (yaw worst case)
+  chunk_cells: 250
+
+thresholds:
+  annual_hours: 30
+  daily_minutes: 30
+
+grid:
+  resolution_m: 5
+  flat_test_extent_diameters: 10   # half-extent of flat test grid in rotor diameters
+
+dem:
+  path: data/dem/rgealti_5m_marsanne_L93.tif
+  preferred: IGN RGE ALTI 5 m (Geoplateforme)
+  fallback: Copernicus GLO-30
+
+# Default turbine used by the flat test and as fallback for missing fields
+default_turbine:
+  hub_height_m: 110
+  rotor_diameter_m: 130
+  overhang_m: 6.0
+
+# ---- Real-site run (scripts/run_site.py) ----
+site_run:
+  turbines_csv: data/turbines.csv
+  include_groups: ["Marsanne repowering", "West pair"]   # group-name prefixes
+  include_east_group: false        # East group specs unknown; if true, east_group_specs must be filled in
+  east_group_specs: {hub_height_m: null, rotor_diameter_m: null}
+  buildings: data/vector/bdtopo_batiment.json
+  receptor_min_logements: 0        # receptors = buildings with nombre_de_logements > this
+  horizon:
+    azimuth_bins: 360
+    max_distance_m: 5000
+  out_prefix: marsanne
+# NOTE flags: a receptor "exceeds" when annual hours > 30 or any day has > 30 min.
+
+# ---- Blender scene / animation (scripts/blender_scene.py, scripts/compose_year.py) ----
+scene:
+  ortho_json: data/ortho/ortho_1m_L93.json     # extent of the scene = ortho extent (= modelled grid + 1 km)
+  ortho_jpg: data/ortho/ortho_1m_L93.jpg
+  ortho_outer_json: data/ortho/ortho_2m_dem_L93.json   # whole DEM at 2 m, used for the outer low-res terrain
+  ortho_outer_jpg: data/ortho/ortho_2m_dem_L93.jpg
+  vertical_exaggeration: 1.5
+  ortho_saturation: 0.8
+  ortho_value: 0.8
+  building_default_height_m: 6.0
+  show_east_group: false           # only drawn (grey) if inside the scene extent
+  turbine_scale: 1.0
+  exposure: -2.2
+  turbine_yaw_bearing_deg: 200     # rotor faces this compass bearing (toward camera / south-south-west)
+  camera:
+    from_bearing_deg: 202          # camera sits SSW of the target
+    elevation_deg: 38              # tilt of the line of sight
+    lens_mm: 70
+    target_xy: [848600, 6399050]
+    distance_m: 8000
+    resolution: [1920, 1080]
+  sun: {elevation_deg: 17, azimuth_deg: 250, size_deg: 0.53, intensity: 1.0}
+  render: {samples: 64, bounces: 4, denoise: true}
+  oversize: 1.2
+  cameras:
+    16x9: {from_bearing_deg: 215, elevation_deg: 34, lens_mm: 70, target_xy: [848600, 6398500], distance_m: 9500, resolution: [1920, 1080]}
+    4x5:  {from_bearing_deg: 235, elevation_deg: 44, lens_mm: 70, target_xy: [848000, 6398400], distance_m: 7000, resolution: [1080, 1350]}
+  out_dir: outputs/blender
+
+# ---- v2 animation (4:5 and 16:9) ----
+scene_v2_note: "cameras are rendered oversize; the compositor crops with eased pan/zoom"

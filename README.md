@@ -27,6 +27,8 @@ In day order. A row is added when the day is published.
 | 13 | Interactions | [Nice's biggest workplace outside Nice is another country: 10,495 residents commute to Monaco](day-13-interactions/) ([live page](https://abenrob.github.io/30daymap2026/day-13-interactions/)) |
 | 14 | Borgesian map | [Barcelona at 1:1: sheet 1 of approximately 105 million](day-14-borgesian-map/) |
 | 15 | Inside out | [Monterey Bay with elevation multiplied by -1: California under the sea, the canyon a ridge](day-15-inside-out/) |
+| 16 | Collaborative map | [Velographs: how far you can cycle in an hour from anywhere on Earth, built with Ryan Morris](day-16-collaborative-map/) ([page](https://abenrob.github.io/30daymap2026/day-16-collaborative-map/)) |
+| 17 | Light & dark | [Every minute of 2025, eight wind turbines, one ridge: the worst-case shadow flicker zone on the Marsanne ridge in the Drôme](day-17-light-and-dark/) |
 
 ## Layout
 

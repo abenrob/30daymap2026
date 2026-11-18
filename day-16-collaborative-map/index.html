@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Velographs · Day 16 · Collaborative map</title>
+<meta name="description" content="Velographs: custom posters of how far you can cycle in an hour from anywhere on Earth. Built by Adam Roberts and Ryan Morris.">
+<meta property="og:title" content="Velographs: how far you can cycle in an hour, from anywhere on Earth">
+<meta property="og:description" content="Custom cycling reachability posters. The hills, mountains and coastlines show up because roads cannot go there. Built by Adam Roberts and Ryan Morris.">
+<meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-16-collaborative-map/images/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A Velographs poster of San Francisco on a wall: the roads reachable by bike in an hour from Presidio Heights, coloured from yellow to purple by ten-minute bands">
+<meta property="og:url" content="https://abenrob.github.io/30daymap2026/day-16-collaborative-map/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  main { max-width: 1200px; margin: 0 auto; padding: 8px 16px 32px; }
+  .figure { display: block; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .figure img { display: block; width: 100%; height: auto; }
+  .figure:hover { border-color: var(--accent); }
+  .text { max-width: 680px; margin: 20px 0 0; }
+  .text p { margin: 0 0 14px; }
+  .go { display: inline-block; margin-top: 4px; padding: 8px 14px; border: 1px solid var(--accent); border-radius: 6px; text-decoration: none; }
+  footer { max-width: 1200px; margin: 0 auto; padding: 0 16px 32px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="quiet"><a href="../">‹ 30DayMapChallenge 2026</a></div>
+  <div class="quiet">Day 16 · Collaborative map</div>
+  <h1>Velographs: how far you can cycle in an hour, from anywhere on Earth</h1>
+</header>
+
+<main>
+  <a class="figure" href="https://www.velographs.com/">
+    <img src="images/preview.png" alt="A Velographs poster of San Francisco on a wall: the roads reachable by bike in an hour from Presidio Heights, coloured from yellow to purple by ten-minute bands" width="1200" height="630">
+  </a>
+  <div class="text">
+    <p>Velographs was a collaboration all the way around. I coded and built the posters, Ryan Morris automated it and built the site around it, so anyone could make a custom poster of how far they can cycle in an hour from any point on Earth. This one is San Francisco from Presidio Heights, in ten-minute bands.</p>
+    <p>My favourite thing about it is cartography by omission. Nothing on the poster draws a hill, a mountain or a coastline. They show up because roads cannot go there.</p>
+    <p><a class="go" href="https://www.velographs.com/">See it at velographs.com</a></p>
+  </div>
+</main>
+
+<footer class="quiet">
+  Reach computed as line-based multigraph isolines with the Targomo API, on road data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL). Automation and site: Ryan Morris. The code behind Velographs is not shared.
+</footer>
+</body>
+</html>

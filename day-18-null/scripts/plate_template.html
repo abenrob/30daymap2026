@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Seasonal Circuits of the Dahu — Plate XVII</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  :root{ --paper:#ece2cb; --ink:#2e2419; --sepia:#5a4630; --faint:#7d6a52; --dex:#a3352a; --lev:#24507a; --ochre:#c08a2e; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#3a342c;overflow:hidden;height:100%}
+  #stage{position:absolute;left:0;top:0;width:1080px;height:1350px;background:var(--paper);color:var(--ink);font-family:"EB Garamond",serif;transform-origin:0 0;overflow:hidden}
+  .abs{position:absolute}
+  .frame{left:20px;top:20px;right:20px;bottom:20px;border:2px solid var(--sepia)}
+  .frame:after{content:"";position:absolute;inset:4px;border:0.8px solid var(--sepia)}
+  .plateno{left:0;right:0;top:40px;text-align:center;font:15px "IM Fell English SC",serif;letter-spacing:.32em;color:var(--sepia)}
+  h1{left:0;right:0;top:60px;margin:0;text-align:center;font:400 52px/1.05 "IM Fell English",serif;letter-spacing:.005em}
+  .sub{left:0;right:0;top:122px;text-align:center;font:italic 21px "EB Garamond",serif;color:var(--sepia)}
+  .rule{left:120px;right:120px;height:0;border-top:0.8px solid var(--sepia)}
+  #map{left:64px;top:186px;width:952px;height:720px}
+  #map canvas{position:absolute;left:0;top:0}
+  .cart{left:20px;top:18px;background:var(--paper);border:1.6px solid var(--sepia);outline:0.7px solid var(--sepia);outline-offset:-5px;padding:10px 22px 11px;text-align:center}
+  .cart small{display:block;font:12px "IM Fell English SC",serif;letter-spacing:.28em;color:var(--faint)}
+  .cart span{display:block;font:italic 32px/1.05 "IM Fell English",serif;margin-top:2px}
+  .skel{left:56px;top:952px;width:470px}
+  .skel img{display:block;width:100%;height:auto}
+  .figcap{left:56px;top:1262px;width:480px;font:italic 15.5px/1.3 "EB Garamond",serif;color:var(--sepia)}
+  .figcap b{font:normal 14px "IM Fell English SC",serif;letter-spacing:.14em;color:var(--ink)}
+  .expl{left:572px;top:950px;width:448px}
+  .expl h3{margin:0;text-align:center;font:400 16px "IM Fell English SC",serif;letter-spacing:.3em;color:var(--ink);border-top:0.8px solid var(--sepia);border-bottom:0.8px solid var(--sepia);padding:4px 0 3px}
+  .row{display:flex;align-items:center;gap:14px;margin-top:12px;font:17px/1.25 "EB Garamond",serif}
+  .row i{color:var(--sepia)}
+  .sample{flex:0 0 54px;height:0;border-top:2.4px solid}
+  .credit{right:30px;bottom:26px;font:italic 11px "EB Garamond",serif;color:var(--faint)}
+  #rose{left:572px;top:1078px}
+  .aspect{left:770px;top:1102px;width:250px}
+  .aspect small{display:block;font:13px "IM Fell English SC",serif;letter-spacing:.24em;color:var(--faint)}
+  .aspect .dir{font:italic 34px/1.05 "IM Fell English",serif;margin-top:4px}
+  .aspect .why{font:italic 17px/1.3 "EB Garamond",serif;color:var(--sepia);margin-top:6px}
+  #paper{left:0;top:0;pointer-events:none;mix-blend-mode:multiply}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="abs frame"></div>
+  <div class="abs plateno">Plate XVII.</div>
+  <h1 class="abs">The Seasonal Circuits of the Dahu</h1>
+  <div class="abs sub">Dahutus montanus, whose limbs are shorter on one side, may circle its mountain in one direction only.</div>
+
+  <div class="abs" id="map">
+    <canvas id="terrain"></canvas><canvas id="trails"></canvas><canvas id="fx"></canvas>
+    <div class="abs cart" id="cart"><small>Observed on</small><span id="date">the 1st of January</span></div>
+  </div>
+
+  <div class="abs skel"><img alt="Skeleton of the dahu, lateral and anterior aspects" src="SKELETON_SRC"></div>
+  <div class="abs figcap"><b>Fig. 1.</b> Skeleton of the dextrogyre variety, lateral and anterior aspects. The limbs of the right side are visibly the shorter.</div>
+
+  <div class="abs expl">
+    <h3>Explanation</h3>
+    <div class="row"><span class="sample" style="border-color:var(--dex)"></span><div>Dextrogyre variety, <i>circuits made clockwise</i></div></div>
+    <div class="row"><span class="sample" style="border-color:var(--lev)"></span><div>Lévogyre variety, <i>circuits made counter-clockwise</i></div></div>
+  </div>
+  <canvas class="abs" id="rose"></canvas>
+  <div class="abs aspect"><small>Aspect favoured</small><div class="dir" id="dir">South-West</div><div class="why" id="why">for the warmth of the afternoon sun</div></div>
+
+  <div class="abs credit">Skeleton after the Musée des Sciences Nocturnes.</div>
+  <canvas class="abs" id="paper"></canvas>
+</div>
+
+<script>
+(() => {
+const RECORD = location.hash === '#record';
+let seed = 20261118;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+
+// ---------- real terrain: IGN BD ALTI, km relative to Grenoble ----------
+const LAT0=45.1885, LON0=5.7245, KMLAT=111.2, KMLON=78.231;
+const toKm=(lat,lon)=>[(lon-LON0)*KMLON,(lat-LAT0)*KMLAT];
+const X0=(5.185-LON0)*KMLON, X1=(6.518-LON0)*KMLON, Y0=(44.93-LAT0)*KMLAT, Y1=(45.64-LAT0)*KMLAT, WKM=X1-X0, HKM=Y1-Y0;
+// movement grid (300 m, smoothed) covers a wider area than the map so animals can leave the frame
+const GLO0=5.05, GLO1=6.70, GLA0=44.80, GLA1=45.80, GW=440, GH=370;
+const SX0=(GLO0-LON0)*KMLON+1, SX1=(GLO1-LON0)*KMLON-1, SY0=(GLA0-LAT0)*KMLAT+1, SY1=(GLA1-LAT0)*KMLAT-1;
+const GRID=(()=>{ const bin=atob('SIMGRID'); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new Uint16Array(u.buffer); })();
+function h(x,y){
+  const lon=LON0+x/KMLON, lat=LAT0+y/KMLAT;
+  let fi=(lon-GLO0)/(GLO1-GLO0)*GW-0.5, fj=(GLA1-lat)/(GLA1-GLA0)*GH-0.5;
+  fi=Math.max(0,Math.min(GW-1.001,fi)); fj=Math.max(0,Math.min(GH-1.001,fj));
+  const i=fi|0, j=fj|0, u=fi-i, v=fj-j, k=j*GW+i;
+  return (GRID[k]*(1-u)+GRID[k+1]*u)*(1-v)+(GRID[k+GW]*(1-u)+GRID[k+GW+1]*u)*v;
+}
+function grad(x,y){ const e=0.15; return [(h(x+e,y)-h(x-e,y))/(2*e),(h(x,y+e)-h(x,y-e))/(2*e)]; }
+const MASSIFS=[ // seed near the summit, label position
+  {name:'Chartreuse', seed:[45.2876,5.7876], lab:[45.355,5.775], n:34},
+  {name:'Vercors',    seed:[45.115,5.605],   lab:[45.005,5.47],  n:34},
+  {name:'Belledonne', seed:[45.2056,6.0896], lab:[45.29,6.155],  n:44},
+  {name:'Taillefer',  seed:[45.0466,5.8939], lab:[44.985,5.93],  n:22},
+  {name:'Bauges',     seed:[45.600,6.070],   lab:[45.615,6.175], n:26},
+].map(m=>({...m, x:toKm(...m.seed)[0], y:toKm(...m.seed)[1]}));
+const RIVERS=RIVERJSON;
+const TOWNS=[['GRENOBLE',45.1885,5.7245,1],['CHAMBÉRY',45.5646,5.9178,-1]];
+const RIVLAB=[['Isère',45.335,5.965],['Drac',44.99,5.705],['Romanche',45.045,5.905],['Arc',45.47,6.40]];
+
+// ---------- canvases ----------
+const CW=952, CH=720, R=RECORD?1:Math.min(2,devicePixelRatio||1);
+function sizeCanvas(c,w,hh){ c.width=w*R; c.height=hh*R; c.style.width=w+'px'; c.style.height=hh+'px'; const g=c.getContext('2d'); g.setTransform(R,0,0,R,0,0); return g; }
+const gT=sizeCanvas(document.getElementById('terrain'),CW,CH), gR=sizeCanvas(document.getElementById('trails'),CW,CH), gF=sizeCanvas(document.getElementById('fx'),CW,CH);
+const px=x=>(x-X0)/WKM*CW, py=y=>(Y1-y)/HKM*CH;
+const BASE=new Image(); BASE.src='BASEMAP_SRC';
+function label(ctx,t,x,y,font,col,spacing='0px',haloW=4){ ctx.font=font; ctx.letterSpacing=spacing; ctx.lineWidth=haloW; ctx.strokeStyle='rgba(236,226,203,.85)'; ctx.lineJoin='round'; ctx.strokeText(t,x,y); ctx.fillStyle=col; ctx.fillText(t,x,y); ctx.letterSpacing='0px'; }
+const latY=lat=>py((lat-LAT0)*KMLAT), lonX=lon=>px((lon-LON0)*KMLON);
+
+function drawTerrain(){
+  gT.imageSmoothingEnabled=true; gT.imageSmoothingQuality='high'; gT.drawImage(BASE,0,0,CW,CH);
+  gT.save(); gT.beginPath(); gT.rect(0,0,CW,CH); gT.clip();
+  gT.lineCap='round'; gT.lineJoin='round';
+  const W={Isère:3.4,Drac:2.5,Romanche:2.3,Arc:2.5};
+  for(const pass of [0,1]) for(const [n,parts] of Object.entries(RIVERS)) for(const p of parts){
+    gT.beginPath(); p.forEach(([x,y],i)=>i?gT.lineTo(px(x),py(y)):gT.moveTo(px(x),py(y)));
+    if(pass===0){ gT.strokeStyle='#4a6a78'; gT.lineWidth=W[n]; } else { gT.strokeStyle='rgba(214,226,224,.7)'; gT.lineWidth=W[n]*0.33; }
+    gT.stroke(); }
+  // river names, set along the stream
+  for(const [n,lat,lon] of RIVLAB){ const [tx,ty]=toKm(lat,lon); let best=null,bd=1e9;
+    for(const p of RIVERS[n]||[]) for(let i=2;i<p.length-2;i++){ const d=(p[i][0]-tx)**2+(p[i][1]-ty)**2; if(d<bd){bd=d;best=[p,i];} }
+    if(!best) continue; const [p,i]=best; const a=p[i-2], b=p[i+2];
+    let ang=Math.atan2(py(b[1])-py(a[1]),px(b[0])-px(a[0])); if(ang>Math.PI/2) ang-=Math.PI; if(ang<-Math.PI/2) ang+=Math.PI;
+    gT.save(); gT.translate(px(p[i][0]),py(p[i][1])); gT.rotate(ang); gT.textAlign='center'; label(gT,n,0,-6,'italic 16px "IM Fell English"','#3f5f6e','1.5px'); gT.restore(); }
+  // towns
+  for(const [n,lat,lon,side] of TOWNS){ const [x,y]=toKm(lat,lon), X=px(x), Y=py(y);
+    gT.fillStyle='#2e2419'; gT.beginPath(); gT.arc(X,Y,4.2,0,7); gT.fill(); gT.strokeStyle='#2e2419'; gT.lineWidth=1; gT.beginPath(); gT.arc(X,Y,7.5,0,7); gT.stroke();
+    gT.textAlign=side>0?'left':'right'; label(gT,n,X+side*12,Y+5,'15px "IM Fell English SC"','#2e2419','2px'); }
+  gT.textAlign='center';
+  for(const m of MASSIFS){ const [x,y]=toKm(...m.lab); label(gT,m.name.toUpperCase(),px(x),py(y),'17px "IM Fell English SC"','#3b2c1d','5px'); }
+  gT.restore();
+  // scale of kilometres
+  const [skx,sky]=toKm(45.405,5.215), sx=px(skx), sy=py(sky), u=10/WKM*CW;
+  gT.lineWidth=1; gT.strokeStyle='#2e2419';
+  for(let i=0;i<2;i++){ gT.fillStyle=i%2?'#ece2cb':'#2e2419'; gT.fillRect(sx+i*u,sy,u,5); gT.strokeRect(sx+i*u,sy,u,5); }
+  gT.fillStyle='rgba(236,226,203,.0)';
+  gT.textAlign='center'; gT.fillStyle='#2e2419';
+  ['0','10','20'].forEach((t,i)=>label(gT,t,sx+i*u,sy-4,'12px "EB Garamond"','#2e2419','0px',3));
+  label(gT,'Kilomètres',sx+u,sy+18,'italic 12px "EB Garamond"','#2e2419','0px',3);
+  // graduated border: alternating 5′ bars
+  const B=7; gT.lineWidth=0.8; gT.strokeStyle='#2e2419';
+  gT.fillStyle='#ece2cb'; gT.fillRect(0,0,CW,B); gT.fillRect(0,CH-B,CW,B); gT.fillRect(0,0,B,CH); gT.fillRect(CW-B,0,B,CH);
+  gT.strokeRect(0.5,0.5,CW-1,CH-1); gT.strokeRect(B+0.5,B+0.5,CW-2*B-1,CH-2*B-1);
+  const step=5/60;
+  let k=0; for(let lat=Math.floor((LAT0+Y0/KMLAT)/step)*step; lat<LAT0+Y1/KMLAT; lat+=step,k++){ const y0=latY(lat), y1=latY(lat+step);
+    if(k%2){ gT.fillStyle='#2e2419'; gT.fillRect(0,Math.min(y0,y1),B,Math.abs(y1-y0)); gT.fillRect(CW-B,Math.min(y0,y1),B,Math.abs(y1-y0)); } }
+  k=0; for(let lon=Math.floor((LON0+X0/KMLON)/step)*step; lon<LON0+X1/KMLON; lon+=step,k++){ const x0=lonX(lon), x1=lonX(lon+step);
+    if(k%2){ gT.fillStyle='#2e2419'; gT.fillRect(x0,0,x1-x0,B); gT.fillRect(x0,CH-B,x1-x0,B); } }
+}
+function drawGraticuleLabels(){
+  const st=document.getElementById('stage'), step=10/60;
+  const fmt=d=>{ const deg=Math.floor(d+1e-9), min=Math.round((d-deg)*60); return `${deg}°${String(min).padStart(2,'0')}′`; };
+  for(let lat=Math.ceil((LAT0+Y0/KMLAT)/step)*step; lat<LAT0+Y1/KMLAT-0.01; lat+=step){ const y=186+latY(lat);
+    const el=document.createElement('div'); el.className='abs'; el.textContent=fmt(lat);
+    el.style.cssText=`left:24px;top:${y-8}px;width:38px;text-align:right;font:italic 11px "EB Garamond";color:#5a4630`; st.appendChild(el); }
+  for(let lon=Math.ceil((LON0+X0/KMLON)/step)*step; lon<LON0+X1/KMLON-0.01; lon+=step){ const x=64+lonX(lon);
+    const el=document.createElement('div'); el.className='abs'; el.textContent=fmt(lon);
+    el.style.cssText=`left:${x-30}px;top:909px;width:60px;text-align:center;font:italic 11px "EB Garamond";color:#5a4630`; st.appendChild(el); }
+}
+
+// ---------- seasons ----------
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MDAYS=[31,28,31,30,31,30,31,31,30,31,30,31];
+const ord=n=>n+(n%100>=11&&n%100<=13?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'));
+function dateLabel(d){ let m=0, dd=Math.floor(d); while(dd>=MDAYS[m]){dd-=MDAYS[m];m++;} return `the ${ord(dd+1)} of ${MONTHS[m]}`; }
+const season=d=>0.5-0.5*Math.cos(2*Math.PI*(d-45)/365);
+const prefBearing=d=>((225+360*(d-15)/365)%360+360)%360;
+const NAMES=['North','North-East','East','South-East','South','South-West','West','North-West'];
+const WHY={'South-West':'for the warmth of the afternoon sun','North-West':'where the thaw is slow and the slope sheltered','North-East':'for coolness, having the morning sun only','South-East':'for the early sun, and ground that dries quickly'};
+const near4=b=>['North-East','South-East','South-West','North-West'][Math.floor(((b%360)+360)%360/90)];
+
+// ---------- dahus ----------
+const PEAKS=MASSIFS.map(m=>{ let b=0; for(let k=0;k<600;k++){ const r=rnd()*5, t=rnd()*7; b=Math.max(b,h(m.x+Math.cos(t)*r,m.y+Math.sin(t)*r)); } return b; });
+const targetZ=(a,d)=>a.zw+(a.zs-a.zw)*season(d);
+function placeOn(a,zt){ const m=MASSIFS[a.home];
+  for(let tries=0;tries<30;tries++){ const ang=rnd()*Math.PI*2; let x=m.x,y=m.y;
+    for(let s=0;s<400;s++){ x+=Math.cos(ang)*0.1; y+=Math.sin(ang)*0.1; if(h(x,y)<zt) break; }
+    if(x>SX0&&x<SX1&&y>SY0&&y<SY1){ a.x=x;a.y=y;return; } }
+  a.x=m.x;a.y=m.y; }
+function makeDahu(home,d){ const a={home,dir:rnd()<.5?1:-1,v:1.3+rnd()*1.1,zw:780+rnd()*350,zs:Math.min(PEAKS[home]-180,1500+rnd()*900),asp:0};
+  placeOn(a,targetZ(a,d)); a.px=a.x; a.py=a.y; return a; }
+const dahus=[]; MASSIFS.forEach((m,mi)=>{ for(let k=0;k<m.n;k++) dahus.push(makeDahu(mi,0)); });
+let day=0, drawTrails=true;
+function stepDahu(a,dDays){
+  const zt=targetZ(a,day), pb=prefBearing(day)*Math.PI/180;
+  let [gx,gy]=grad(a.x,a.y); let gm=Math.max(Math.hypot(gx,gy),1e-3);
+  const aspB=Math.atan2(-gx/gm,-gy/gm); a.asp=aspB;
+  const dist=a.v*dDays*(1-0.9*Math.cos(aspB-pb)); const n=Math.max(1,Math.ceil(dist/0.2));
+  for(let s=0;s<n;s++){ const ds=dist/n;
+    [gx,gy]=grad(a.x,a.y); gm=Math.max(Math.hypot(gx,gy),1e-3);
+    const nx=gx/gm, ny=gy/gm, tx=a.dir===1?ny:-ny, ty=a.dir===1?-nx:nx;
+    const err=zt-h(a.x,a.y); if(gm<50&&Math.abs(err)>300){ placeOn(a,zt); a.px=a.x; a.py=a.y; return; }
+    let corr=Math.max(-0.6,Math.min(0.6,err/gm*0.8)); if(gm<40) corr=Math.sign(err)*0.15;
+    a.x+=tx*ds+nx*corr*ds*2; a.y+=ty*ds+ny*corr*ds*2;
+    if(a.x<SX0||a.x>SX1||a.y<SY0||a.y>SY1){ placeOn(a,zt); a.px=a.x; a.py=a.y; return; } }
+  { [gx,gy]=grad(a.x,a.y); gm=Math.max(Math.hypot(gx,gy),40); const err=zt-h(a.x,a.y); const c=Math.max(-0.3,Math.min(0.3,err/gm))*dDays; a.x+=gx/gm*c; a.y+=gy/gm*c; }
+}
+const DEX='163,53,42', LEV='36,80,122';
+function advance(dDays){
+  const sub=Math.max(1,Math.ceil(dDays/0.2));
+  for(let s=0;s<sub;s++){
+    for(const a of dahus){ a.px=a.x; a.py=a.y; }
+    for(const a of dahus) stepDahu(a,dDays/sub);
+    day+=dDays/sub; if(day>=365) day-=365;
+    if(drawTrails){ gR.save(); gR.beginPath(); gR.rect(8,8,CW-16,CH-16); gR.clip(); gR.lineWidth=1.3; gR.lineCap='round';
+      for(const a of dahus){ if(Math.hypot(a.x-a.px,a.y-a.py)>2) continue;
+        gR.strokeStyle=`rgba(${a.dir===1?DEX:LEV},.55)`; gR.beginPath(); gR.moveTo(px(a.px),py(a.py)); gR.lineTo(px(a.x),py(a.y)); gR.stroke(); } gR.restore(); }
+  }
+  if(drawTrails){ gR.save(); gR.globalCompositeOperation='destination-out'; gR.fillStyle='rgba(0,0,0,.035)'; gR.fillRect(0,0,CW,CH); gR.restore(); }
+}
+
+// ---------- compass rose ----------
+const RS=190, gRose=sizeCanvas(document.getElementById('rose'),RS,RS);
+function drawRose(){
+  const c=RS/2, r=78; gRose.clearRect(0,0,RS,RS);
+  gRose.strokeStyle='#2e2419'; gRose.lineWidth=0.8;
+  gRose.beginPath(); gRose.arc(c,c,r,0,7); gRose.stroke(); gRose.beginPath(); gRose.arc(c,c,r-5,0,7); gRose.stroke();
+  for(let i=0;i<64;i++){ const a=i/64*2*Math.PI, l=i%8===0?7:i%4===0?5:3; gRose.beginPath(); gRose.moveTo(c+Math.cos(a)*(r-5),c+Math.sin(a)*(r-5)); gRose.lineTo(c+Math.cos(a)*(r-5-l),c+Math.sin(a)*(r-5-l)); gRose.stroke(); }
+  // favoured aspect: a tinted sector
+  const pb=prefBearing(day), a0=(pb-90-45)*Math.PI/180, a1=(pb-90+45)*Math.PI/180;
+  gRose.beginPath(); gRose.moveTo(c,c); gRose.arc(c,c,r-6,a0,a1); gRose.closePath(); gRose.fillStyle='rgba(192,138,46,.35)'; gRose.fill();
+  // 8-point star, half-shaded points
+  const star=(n,len,w,rot)=>{ for(let i=0;i<n;i++){ const a=rot+i*2*Math.PI/n-Math.PI/2, p=[c+Math.cos(a)*len,c+Math.sin(a)*len], l=[c+Math.cos(a-Math.PI/2)*w,c+Math.sin(a-Math.PI/2)*w], q=[c+Math.cos(a+Math.PI/2)*w,c+Math.sin(a+Math.PI/2)*w];
+    gRose.beginPath(); gRose.moveTo(c,c); gRose.lineTo(...p); gRose.lineTo(...l); gRose.closePath(); gRose.fillStyle='#ece2cb'; gRose.fill(); gRose.stroke();
+    gRose.beginPath(); gRose.moveTo(c,c); gRose.lineTo(...p); gRose.lineTo(...q); gRose.closePath(); gRose.fillStyle='#2e2419'; gRose.fill(); gRose.stroke(); } };
+  star(8,r*0.55,7,Math.PI/8); star(4,r-12,10,0);
+  gRose.font='14px "IM Fell English SC"'; gRose.fillStyle='#2e2419'; gRose.textAlign='center'; gRose.textBaseline='middle';
+  [['N',0],['E',90],['S',180],['W',270]].forEach(([t,b])=>{ const a=(b-90)*Math.PI/180; gRose.fillText(t,c+Math.cos(a)*(r+10),c+Math.sin(a)*(r+10)); });
+  // pointer to favoured aspect
+  const pa=(pb-90)*Math.PI/180; gRose.strokeStyle='#a3352a'; gRose.lineWidth=1.6; gRose.beginPath(); gRose.moveTo(c,c); gRose.lineTo(c+Math.cos(pa)*(r-6),c+Math.sin(pa)*(r-6)); gRose.stroke();
+  gRose.fillStyle='#a3352a'; gRose.beginPath(); gRose.arc(c,c,3,0,7); gRose.fill();
+}
+
+// ---------- paper texture ----------
+function drawPaper(){
+  const W=1080,H=1350, c=document.getElementById('paper'); c.width=W; c.height=H; c.style.width=W+'px'; c.style.height=H+'px';
+  const g=c.getContext('2d'), im=g.createImageData(W,H); let s2=99;
+  const r2=()=>{ s2=(s2*16807)%2147483647; return s2/2147483647; };
+  for(let i=0;i<W*H;i++){ const n=235+r2()*20; im.data[i*4]=n; im.data[i*4+1]=n; im.data[i*4+2]=n-2; im.data[i*4+3]=255; }
+  g.putImageData(im,0,0);
+  // foxing and a soft darkened edge
+  for(let i=0;i<26;i++){ const x=r2()*W, y=r2()*H, rr=6+r2()*30; const gr=g.createRadialGradient(x,y,0,x,y,rr); gr.addColorStop(0,'rgba(170,130,80,.10)'); gr.addColorStop(1,'rgba(170,130,80,0)'); g.fillStyle=gr; g.fillRect(x-rr,y-rr,2*rr,2*rr); }
+  const v=g.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.78); v.addColorStop(0,'rgba(255,255,255,0)'); v.addColorStop(1,'rgba(140,105,60,.28)'); g.fillStyle=v; g.fillRect(0,0,W,H);
+}
+
+const elDate=document.getElementById('date'), elDir=document.getElementById('dir'), elWhy=document.getElementById('why');
+function render(){
+  gF.clearRect(0,0,CW,CH);
+  for(const a of dahus){ const X=px(a.x), Y=py(a.y); if(X<9||Y<9||X>CW-9||Y>CH-9) continue;
+    gF.fillStyle='#ece2cb'; gF.beginPath(); gF.arc(X,Y,3.6,0,7); gF.fill();
+    gF.fillStyle=a.dir===1?'#a3352a':'#24507a'; gF.beginPath(); gF.arc(X,Y,2.6,0,7); gF.fill(); }
+  elDate.textContent=dateLabel(day);
+  const nm=near4(prefBearing(day)+0); elDir.textContent=nm; elWhy.textContent=WHY[nm];
+  drawRose();
+}
+function fit(){ if(RECORD) return; const s=Math.min(innerWidth/1080, innerHeight/1350), st=document.getElementById('stage'); st.style.transform=`scale(${s})`; st.style.left=((innerWidth-1080*s)/2)+'px'; st.style.top=((innerHeight-1350*s)/2)+'px'; }
+addEventListener('resize',fit);
+function warm(){ drawTrails=false; for(let i=0;i<365*3;i++) advance(1/3); drawTrails=true; day=0; }
+const ready=Promise.all([document.fonts?document.fonts.ready:Promise.resolve(), BASE.decode().catch(()=>new Promise(r=>BASE.onload=r))]).then(()=>{ drawPaper(); drawTerrain(); drawGraticuleLabels(); warm(); render(); fit(); });
+window.__ready=ready.then(()=>true);
+window.__frame=(dDays)=>{ advance(dDays); render(); return day; };
+if(!RECORD){ let paused=false, last=0;
+  document.getElementById('map').addEventListener('click',()=>paused=!paused);
+  ready.then(()=>{ const loop=t=>{ const dt=last?Math.min(0.05,(t-last)/1000):0; last=t; if(!paused){ advance(dt*12); render(); } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }); }
+})();
+</script>
+</body>
+</html>

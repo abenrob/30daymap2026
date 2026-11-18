@@ -29,6 +29,7 @@ In day order. A row is added when the day is published.
 | 15 | Inside out | [Monterey Bay with elevation multiplied by -1: California under the sea, the canyon a ridge](day-15-inside-out/) |
 | 16 | Collaborative map | [Velographs: how far you can cycle in an hour from anywhere on Earth, built with Ryan Morris](day-16-collaborative-map/) ([page](https://abenrob.github.io/30daymap2026/day-16-collaborative-map/)) |
 | 17 | Light & dark | [Every minute of 2025, eight wind turbines, one ridge: the worst-case shadow flicker zone on the Marsanne ridge in the Drôme](day-17-light-and-dark/) |
+| 18 | Null | [Field notes on an animal that cannot turn around: the seasonal circuits of the dahu around Grenoble](day-18-null/) ([live page](https://abenrob.github.io/30daymap2026/day-18-null/)) |
 
 ## Layout
 

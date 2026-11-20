@@ -31,6 +31,7 @@ In day order. A row is added when the day is published.
 | 17 | Light & dark | [Every minute of 2025, eight wind turbines, one ridge: the worst-case shadow flicker zone on the Marsanne ridge in the Drôme](day-17-light-and-dark/) |
 | 18 | Null | [Field notes on an animal that cannot turn around: the seasonal circuits of the dahu around Grenoble](day-18-null/) ([live page](https://abenrob.github.io/30daymap2026/day-18-null/)) |
 | 19 | Senses: Smell | [Époisses is on 21 of 24 smelliest-cheese lists; the only measured test put it 9th of 11 AOP cheeses: France's stinkiest AOP cheeses](day-19-senses-smell/) ([live page](https://abenrob.github.io/30daymap2026/day-19-senses-smell/)) |
+| 20 | Hexagons | [Six sides, six frontiers: every side of France's textbook hexagon follows exactly one border](day-20-hexagons/) |
 
 ## Layout
 

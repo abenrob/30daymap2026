@@ -10,3 +10,4 @@ shapely>=2.0
 pillow>=10.0
 scipy>=1.11
 pyshp>=2.3
+geopandas>=1.0

@@ -1,0 +1,17 @@
+{
+  "name": "day-22-projections",
+  "private": true,
+  "description": "Day 22 · Projections: build scripts for the Greenland projection animation",
+  "type": "module",
+  "scripts": {
+    "fetch": "bash 01_fetch.sh",
+    "prep": "node 02_prep_geometry.mjs",
+    "build": "node 03_build_page.mjs"
+  },
+  "dependencies": {
+    "d3": "7.9.2",
+    "d3-geo-projection": "4.0.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  }
+}

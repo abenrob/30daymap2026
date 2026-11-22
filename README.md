@@ -33,6 +33,7 @@ In day order. A row is added when the day is published.
 | 19 | Senses: Smell | [Époisses is on 21 of 24 smelliest-cheese lists; the only measured test put it 9th of 11 AOP cheeses: France's stinkiest AOP cheeses](day-19-senses-smell/) ([live page](https://abenrob.github.io/30daymap2026/day-19-senses-smell/)) |
 | 20 | Hexagons | [Six sides, six frontiers: every side of France's textbook hexagon follows exactly one border](day-20-hexagons/) |
 | 21 | OpenStreetMap | [Open Street Cheese: 166 cheese vending machines in OpenStreetMap, and the AOP cheese each one is likely to stock](day-21-openstreetmap/) |
+| 22 | Projections | [One Greenland, many Greenlands: 15 map projections at one scale, scored on area and shape](day-22-projections/) ([live page](https://abenrob.github.io/30daymap2026/day-22-projections/)) |
 
 ## Layout
 

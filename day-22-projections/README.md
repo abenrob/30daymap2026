@@ -20,13 +20,15 @@ Same globe radius in every frame; Greenland's centroid (41.8 W, 73.1 N) at the s
 | 6 | Sinusoidal | Equal-area | ×1.00 | 25% |
 | 7 | Mollweide | Equal-area | ×1.00 | 38% |
 | 8 | Eckert IV | Equal-area | ×1.00 | 61% |
-| 9 | Robinson | Compromise | ×2.2 | 51% |
+| 9 | Robinson | Compromise | ×2.2* | 51% |
 | 10 | Winkel tripel | Compromise | ×1.85 | 34% |
 | 11 | Natural Earth | Compromise | ×1.87 | 53% |
 | 12 | Equal Earth | Equal-area | ×1.00 | 62% |
-| 13 | Peirce quincuncial (centred on the North Pole) | Conformal | ×0.77 | 1% |
+| 13 | Peirce quincuncial (centred on the North Pole) | Conformal | ×0.77* | 1% |
 | 14 | Lambert azimuthal equal-area, centred on Greenland | Equal-area | ×1.00 | 0.0% |
 | 15 | Orthographic, centred on Greenland | Perspective | ×0.99 | 0.2% |
+
+\* Wrong in the video: d3 draws these two at the wrong size for the shared radius (see Limitations). The correct values are Robinson ×1.61 and Peirce quincuncial ×1.05. Their shape scores are not affected.
 
 The selection keeps the world projections people actually meet, every projection named in the post, and only two of the near-identical local projections at the end. An earlier cut with 23 also scored Gall stereographic (×3.7, 42%), Lambert cylindrical equal-area (×1.00, 81%), Bonne (×1.00, 12%), Hammer (×1.00, 29%), Bertin 1953 (×0.84, 7%), Lambert conformal conic centred on Greenland (×0.99, 0.4%), polar stereographic EPSG:3413 (×0.99, 1%) and polar azimuthal equidistant (×1.02, 0.7%).
 
@@ -49,6 +51,8 @@ The selection keeps the world projections people actually meet, every projection
 ## Limitations
 
 - Scores use the main island only; the offshore islands are drawn but not scored.
+- Two area scores in the video are wrong, because d3's raw functions for these projections are not at standard scale on a unit sphere (the same issue as d3's stereographic, see Method step 2). d3's Robinson leaves out the 0.8487 x-factor and uses π/2 instead of 1.3523 for y, so it is about 17% too large in each direction: ×2.2 shown, ×1.61 correct. d3's Peirce quincuncial has a scale of 0.854 at the pole, where it should be 1: ×0.77 shown, ×1.05 correct. Shape scores are unaffected, since the fit removes scale. To fix, multiply those two projections' scale in `page.js` by 0.8487 (Robinson) and 1/0.8536 (Peirce), then rerun 03 and 04. Found by recomputing every score with PROJ 9.8 (Robinson and Peirce areas differed from d3; all 15 shape scores matched to within 0.1 points).
+- The shape score compares outlines (full Procrustes: shift, rotate, uniform scale), not intrinsic distortion. Checked against Tissot measures over Greenland's interior, a scale-normalised Airy–Kavrayskiy ranks the projections almost the same way (Spearman 0.98), while angular distortion alone ranks them quite differently (0.89): Mercator and Peirce both score 0° there, since conformal projections keep angles locally.
 - World projections keep their default central meridian (0°), as on the world maps people see. Centring them on 42 W would cut most of the shear.
 - The cold-open unfold is a straight interpolation between the orthographic and Mercator positions of each mesh vertex, not a physical unrolling of the sphere. The cut behind the pole shows briefly as a dark slot at the top of the globe.
 - The Blue Marble copy is 4096 x 2048 (about 10 km per pixel at the equator) and shows heavy snow over Canada and Siberia, so Greenland stands out less than in a summer mosaic. Swapping in a July Blue Marble Next Generation image is a one-file change (`bluemarble.jpg`).

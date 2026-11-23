@@ -1,0 +1,22 @@
+html, body { margin: 0; height: 100%; background: #0e0e10; color: #ececf1; font-family: "IBM Plex Sans", system-ui, sans-serif; overflow: hidden; }
+#map { position: absolute; inset: 0; }
+.back { position: absolute; top: 14px; right: 16px; color: #8b8b95; font-size: 13px; text-decoration: none; z-index: 3; }
+.back:hover { color: #fff; }
+.title { position: absolute; top: 28px; left: 32px; z-index: 2; pointer-events: none; text-shadow: 0 1px 8px #000; }
+.kicker { font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #9a9aa6; }
+h1 { margin: 6px 0 4px; font-size: 32px; font-weight: 600; letter-spacing: -.01em; }
+.dek { margin: 0; color: #b4b4bf; font-size: 15px; }
+.clock { position: absolute; left: 32px; bottom: 40px; z-index: 2; width: 220px; pointer-events: none; text-shadow: 0 1px 8px #000; }
+.min { font: 500 64px/1 "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+.min small { font-size: 18px; margin-left: 8px; color: #9a9aa6; }
+.ramp { position: relative; height: 6px; margin-top: 14px; border-radius: 3px;
+  background: linear-gradient(90deg, #8700A7, #25A39D, #FDE725); opacity: .9; }
+.ramp i { position: absolute; top: -5px; width: 2px; height: 16px; background: #fff; box-shadow: 0 0 8px #fff; left: 0; }
+.ticks { display: flex; justify-content: space-between; font: 400 11px "IBM Plex Mono", monospace; color: #8b8b95; margin-top: 6px; }
+.controls { position: absolute; right: 16px; bottom: 34px; z-index: 3; display: flex; gap: 8px; }
+.controls button { background: #1c1c21cc; color: #ddd; border: 1px solid #33333b; border-radius: 6px; padding: 6px 12px; font: 500 12px "IBM Plex Sans", sans-serif; cursor: pointer; }
+.controls button:hover { border-color: #777; }
+.credit { position: absolute; right: 16px; bottom: 10px; z-index: 2; font-size: 10.5px; color: #6c6c76; }
+.loading { position: absolute; inset: 0; display: grid; place-items: center; color: #888; font: 400 14px "IBM Plex Mono", monospace; z-index: 4; pointer-events: none; }
+.capture .ui { display: none; }
+@media (max-width: 700px) { h1 { font-size: 24px; } .title { left: 18px; top: 20px; } .clock { left: 18px; bottom: 34px; width: 170px; } .min { font-size: 46px; } }

@@ -35,6 +35,7 @@ In day order. A row is added when the day is published.
 | 21 | OpenStreetMap | [Open Street Cheese: 166 cheese vending machines in OpenStreetMap, and the AOP cheese each one is likely to stock](day-21-openstreetmap/) |
 | 22 | Projections | [One Greenland, many Greenlands: 15 map projections at one scale, scored on area and shape](day-22-projections/) ([live page](https://abenrob.github.io/30daymap2026/day-22-projections/)) |
 | 23 | Senses: Taste | [Saint-Joseph vs Gigondas: same river, opposite slopes, 400 heat-index points apart](day-23-senses-taste/) |
+| 24 | Network | [Dropped at Alexanderplatz at 08:00: everywhere you can be by 08:40](day-24-network/) |
 
 ## Layout
 

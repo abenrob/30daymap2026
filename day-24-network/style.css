@@ -1,3 +1,4 @@
+:root { --ramp: #8700a7, #7420a5, #6340a2, #585e9d, #537a96, #59938b, #6ba87c, #87bb69, #aacb54, #d2d93d, #fde725; }
 html, body { margin: 0; height: 100%; background: #0e0e10; color: #ececf1; font-family: "IBM Plex Sans", system-ui, sans-serif; overflow: hidden; }
 #map { position: absolute; inset: 0; }
 .back { position: absolute; top: 14px; right: 16px; color: #8b8b95; font-size: 13px; text-decoration: none; z-index: 3; }
@@ -10,7 +11,7 @@ h1 { margin: 6px 0 4px; font-size: 32px; font-weight: 600; letter-spacing: -.01e
 .min { font: 500 64px/1 "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
 .min small { font-size: 18px; margin-left: 8px; color: #9a9aa6; }
 .ramp { position: relative; height: 6px; margin-top: 14px; border-radius: 3px;
-  background: linear-gradient(90deg, #8700A7, #25A39D, #FDE725); opacity: .9; }
+  background: linear-gradient(90deg, var(--ramp)); opacity: .9; }
 .ramp i { position: absolute; top: -5px; width: 2px; height: 16px; background: #fff; box-shadow: 0 0 8px #fff; left: 0; }
 .ticks { display: flex; justify-content: space-between; font: 400 11px "IBM Plex Mono", monospace; color: #8b8b95; margin-top: 6px; }
 .controls { position: absolute; right: 16px; bottom: 34px; z-index: 3; display: flex; gap: 8px; }
@@ -20,3 +21,4 @@ h1 { margin: 6px 0 4px; font-size: 32px; font-weight: 600; letter-spacing: -.01e
 .loading { position: absolute; inset: 0; display: grid; place-items: center; color: #888; font: 400 14px "IBM Plex Mono", monospace; z-index: 4; pointer-events: none; }
 .capture .ui { display: none; }
 @media (max-width: 700px) { h1 { font-size: 24px; } .title { left: 18px; top: 20px; } .clock { left: 18px; bottom: 34px; width: 170px; } .min { font-size: 46px; } }
+.clock input[type=range] { pointer-events: auto; width: 100%; margin: 12px 0 0; accent-color: #ececf1; cursor: pointer; }

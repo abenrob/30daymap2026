@@ -1,138 +1,193 @@
-// GeoJSON edges (one travel time each) -> directed, timed paths for the page.
-// Usage: node scripts/02_build_paths.mjs   (reads the file 01 wrote)
+// Step 2: turn Targomo's GeoJSON into the compact, timed paths the page draws.
 //
-// Each edge carries one weight w. To animate it along its length we need a
-// direction and a start/end time. Every node gets the smallest w of the
-// edges that touch it (its arrival time). An edge runs from its earlier end
-// to its later end: t0 = T(earlier node), t1 = T(later node). When both ends
-// share a time (no ordering), fall back to walking speed for the duration.
+//   node scripts/02_build_paths.mjs
+//
+// Reads  ../../work/day-24-network/<name>-40min.geojson   (written by step 1)
+// Writes graph/<name>.json                                 (read by js/data.js)
+//        ../../work/day-24-network/<name>-summary.json     (a few checks)
+// Env:   D24_NAME (default berlin-transit), D24_MIN (default 40), D24_WORK
+//
+// The problem this solves: Targomo gives each street segment a single travel
+// time, but to grow a street along its length we need a direction and a time
+// at each end. So:
+//   1. every node (segment end) gets the earliest time of the segments that
+//      touch it: its arrival time;
+//   2. every segment runs from its earlier node to its later node, t0 -> t1;
+//      where both ends share a time, it takes walking pace (max 2 minutes);
+//   3. one straight "walk-in" line joins the drop point to the first street,
+//      because the drop point itself usually sits off the street graph.
+
 import fs from "node:fs";
 import path from "node:path";
 
-const here = path.dirname(new URL(import.meta.url).pathname);
-const day = path.resolve(here, "..");
-const WORK = process.env.D24_WORK || path.resolve(day, "../../work/day-24-network");
-const IN = path.join(WORK, "berlin-transit-60min.geojson");
-const OUT = path.join(day, "graph", "berlin-transit.json");
-const SUMMARY = path.join(WORK, "summary.json");
-
-const WALK = 1.25;          // m/s fallback when an edge has no time gradient
-const Q = 1e5;              // coordinate quantisation (~1 m)
-
-const fc = JSON.parse(fs.readFileSync(IN, "utf8"));
-const meta = fc.metadata || {};
-const origin = meta.origin ? [meta.origin.lng, meta.origin.lat] : [13.4132, 52.5219];
-const maxTime = meta.maxTime || 3600;
-
-const weightOf = p => {
-  for (const k of ["w", "weight", "time", "travelTime", "edgeWeight"]) if (Number.isFinite(+p?.[k])) return +p[k];
-  return NaN;
-};
-const key = c => `${c[0].toFixed(6)},${c[1].toFixed(6)}`;
-const R = 6371008.8, rad = Math.PI / 180;
-const dist = (a, b) => {
-  const x = (b[0] - a[0]) * rad * Math.cos((a[1] + b[1]) / 2 * rad), y = (b[1] - a[1]) * rad;
-  return R * Math.hypot(x, y);
+const DAY = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const WORK = process.env.D24_WORK || path.resolve(DAY, "../../work/day-24-network");
+const NAME = process.env.D24_NAME || "berlin-transit";
+const MINUTES = +(process.env.D24_MIN || 40);
+const FILES = {
+  in: path.join(WORK, `${NAME}-${MINUTES}min.geojson`),
+  out: process.env.D24_OUT || path.join(DAY, "graph", `${NAME}.json`),
+  summary: path.join(WORK, `${NAME}-summary.json`),
 };
 
-// 1. explode into simple lines with a weight
-const edges = [];
-const propKeys = new Map(), geomTypes = new Map();
-for (const f of fc.features) {
-  const g = f.geometry; if (!g) continue;
-  geomTypes.set(g.type, (geomTypes.get(g.type) || 0) + 1);
-  for (const k of Object.keys(f.properties || {})) propKeys.set(k, (propKeys.get(k) || 0) + 1);
-  const w = weightOf(f.properties);
-  if (!Number.isFinite(w)) continue;
-  const parts = g.type === "LineString" ? [g.coordinates] : g.type === "MultiLineString" ? g.coordinates : [];
-  for (const c of parts) if (c.length >= 2) edges.push({ c, w });
+const WALK_MPS = 1.25;    // pace for segments with no time difference
+const WALK_MAX_S = 120;   // ...capped at two minutes per segment
+const Q = 1e5;            // coordinates stored as integers of 1e-5 degrees (~1 m)
+const WALK_IN = { maxSec: 300, maxMetres: 250, sameSpotMetres: 25, tieSec: 15 };
+
+// ---- geometry helpers ----------------------------------------------------------
+
+const RAD = Math.PI / 180, EARTH_R = 6371008.8;
+// Equirectangular distance in metres: plenty at street scale.
+function metres(a, b) {
+  const x = (b[0] - a[0]) * RAD * Math.cos((a[1] + b[1]) / 2 * RAD);
+  const y = (b[1] - a[1]) * RAD;
+  return EARTH_R * Math.hypot(x, y);
 }
+const lineLength = c => c.slice(1).reduce((sum, p, i) => sum + metres(c[i], p), 0);
+const nodeKey = p => `${p[0].toFixed(6)},${p[1].toFixed(6)}`;
+const percentile = (sorted, f) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * f))];
 
-// 2. node arrival times
-const T = new Map();
-const touch = (c, w) => { const k = key(c); const v = T.get(k); if (v === undefined || w < v) T.set(k, w); };
-for (const e of edges) { touch(e.c[0], e.w); touch(e.c[e.c.length - 1], e.w); }
+// ---- 1. read the segments -------------------------------------------------------
 
-// 3. direct and time each edge
-let flat = 0, flipped = 0, wInside = 0, wAtEnd = 0, wAtStart = 0;
-const out = [];
-for (const e of edges) {
-  let c = e.c;
-  let ta = T.get(key(c[0])), tb = T.get(key(c[c.length - 1]));
-  if (ta > tb) { c = c.slice().reverse(); [ta, tb] = [tb, ta]; flipped++; }
-  let len = 0; for (let i = 1; i < c.length; i++) len += dist(c[i - 1], c[i]);
-  let t0 = ta, t1 = tb;
-  if (t1 - t0 < 1) { t1 = t0 + Math.min(len / WALK, 120); flat++; }
-  if (e.w >= t0 - 1 && e.w <= t1 + 1) wInside++;
-  if (Math.abs(e.w - tb) < 1) wAtEnd++;
-  if (Math.abs(e.w - ta) < 1) wAtStart++;
-  if (t0 > maxTime) continue;
-  // [t0, t1, x0, y0, dx1, dy1, ...] as integers (1e-5 deg), deltas after the first
-  const row = [Math.round(t0 * 10) / 10, Math.round(t1 * 10) / 10];
-  let px = Math.round(c[0][0] * Q), py = Math.round(c[0][1] * Q);
-  row.push(px, py);
-  for (let i = 1; i < c.length; i++) {
-    const x = Math.round(c[i][0] * Q), y = Math.round(c[i][1] * Q);
-    if (x === px && y === py) continue;
-    row.push(x - px, y - py); px = x; py = y;
+function readSegments(fc) {
+  const segments = [];
+  for (const f of fc.features) {
+    const w = +f.properties?.w;   // Targomo's travel time for the segment, seconds
+    if (!f.geometry || !Number.isFinite(w)) continue;
+    const g = f.geometry;
+    const lines = g.type === "LineString" ? [g.coordinates]
+      : g.type === "MultiLineString" ? g.coordinates : [];
+    for (const coords of lines) if (coords.length >= 2) segments.push({ coords, w });
   }
-  if (row.length >= 6) out.push(row);
+  return segments;
 }
-// 4. walk-in connectors. The drop point usually sits off the street graph
-// (the middle of Alexanderplatz is not in it), so Targomo charges a straight
-// walk to the nearest street and the first edges start ~150 m away. Draw that
-// walk: a straight line from the origin to the first point within 5 min
-// that is reachable at walking pace (<= 1.4 m/s from the origin) and that no
-// earlier edge already reaches. Faster first points are transit hops (the
-// next U-Bahn station) and stay as islands.
-const SNAP_MAX_T = 300, SNAP_MAX_V = 1.4, SNAP_DEDUPE = 25;
-const ends = out.map(r => { let x = r[2], y = r[3]; for (let i = 4; i < r.length; i += 2) { x += r[i]; y += r[i + 1]; } return [x / Q, y / Q, r[1]]; });
-const snaps = [];
-for (const r of out) {
-  if (r[0] > SNAP_MAX_T) continue;
-  const s0 = [r[2] / Q, r[3] / Q], dm = dist(origin, s0);
-  if (dm / Math.max(r[0], 1) > SNAP_MAX_V) continue;
-  if (ends.some(e => e[2] < r[0] - 0.5 && dist([e[0], e[1]], s0) < SNAP_DEDUPE)) continue;
-  if (snaps.some(sn => dist(sn.p, s0) < SNAP_DEDUPE)) continue;
-  snaps.push({ p: s0, t: r[0], dm });
+
+// ---- 2. arrival time at every node --------------------------------------------------
+
+function nodeArrivals(segments) {
+  const arrival = new Map();
+  const touch = (p, w) => {
+    const k = nodeKey(p);
+    if (!(arrival.get(k) <= w)) arrival.set(k, w);
+  };
+  for (const { coords, w } of segments) {
+    touch(coords[0], w);
+    touch(coords[coords.length - 1], w);
+  }
+  return arrival;
 }
-// Targomo snaps the source to one spot: keep the earliest walk-in, plus any
-// reached within 15 s of it (a snap onto two streets); later ones are reached
-// along the street graph from there.
-snaps.sort((a, b) => a.t - b.t);
-const keep = snaps.filter(sn => sn.t <= snaps[0].t + 15);
-snaps.length = 0; snaps.push(...keep);
-for (const sn of snaps) {
+
+// ---- 3. direct, time and pack each segment -----------------------------------------
+// Packed row: [t0, t1, x0, y0, dx1, dy1, dx2, dy2, ...], times to 0.1 s,
+// coordinates as integers of 1e-5 degrees, deltas after the first vertex.
+
+function packRow(t0, t1, coords) {
+  const row = [Math.round(t0 * 10) / 10, Math.round(t1 * 10) / 10];
+  let px = Math.round(coords[0][0] * Q), py = Math.round(coords[0][1] * Q);
+  row.push(px, py);
+  for (let i = 1; i < coords.length; i++) {
+    const x = Math.round(coords[i][0] * Q), y = Math.round(coords[i][1] * Q);
+    if (x === px && y === py) continue;   // drop vertices that round together
+    row.push(x - px, y - py);
+    px = x; py = y;
+  }
+  return row;
+}
+
+function timedRows(segments, arrival, maxTime, stats) {
+  const rows = [];
+  for (const seg of segments) {
+    let coords = seg.coords;
+    let t0 = arrival.get(nodeKey(coords[0]));
+    let t1 = arrival.get(nodeKey(coords[coords.length - 1]));
+    if (t0 > t1) {
+      coords = coords.slice().reverse();
+      [t0, t1] = [t1, t0];
+      stats.flipped++;
+    }
+    if (t1 - t0 < 1) {
+      t1 = t0 + Math.min(lineLength(coords) / WALK_MPS, WALK_MAX_S);
+      stats.walkPaced++;
+    }
+    if (t0 > maxTime) continue;
+    const row = packRow(t0, t1, coords);
+    if (row.length >= 6) rows.push(row);   // at least two distinct vertices
+  }
+  return rows;
+}
+
+// ---- 4. the walk-in line ---------------------------------------------------------------
+// The first street point reached (within 5 min and 250 m of the drop point)
+// that no earlier segment already leads to, plus any reached within 15 s of
+// it (a snap onto two streets at once).
+
+function rowEnd(row) {
+  let x = row[2], y = row[3];
+  for (let i = 4; i < row.length; i += 2) { x += row[i]; y += row[i + 1]; }
+  return { p: [x / Q, y / Q], t: row[1] };
+}
+
+function walkInRows(rows, origin) {
+  const ends = rows.map(rowEnd);
+  const starts = [];
+  for (const row of rows) {
+    const p = [row[2] / Q, row[3] / Q], t = row[0], d = metres(origin, p);
+    if (t > WALK_IN.maxSec || d > WALK_IN.maxMetres) continue;
+    const reachedEarlier = ends.some(e => e.t < t - 0.5 && metres(e.p, p) < WALK_IN.sameSpotMetres);
+    const alreadyListed = starts.some(s => metres(s.p, p) < WALK_IN.sameSpotMetres);
+    if (!reachedEarlier && !alreadyListed) starts.push({ p, t, d });
+  }
+  starts.sort((a, b) => a.t - b.t);
+  const first = starts.filter(s => s.t <= starts[0].t + WALK_IN.tieSec);
   const ox = Math.round(origin[0] * Q), oy = Math.round(origin[1] * Q);
-  out.push([0, sn.t, ox, oy, Math.round(sn.p[0] * Q) - ox, Math.round(sn.p[1] * Q) - oy]);
+  return {
+    rows: first.map(s => [0, s.t, ox, oy, Math.round(s.p[0] * Q) - ox, Math.round(s.p[1] * Q) - oy]),
+    lines: first.map(s => ({ t: s.t, m: Math.round(s.d) })),
+  };
 }
-out.sort((a, b) => a[0] - b[0]);
 
-let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-for (const e of edges) for (const p of e.c) {
-  if (p[0] < minX) minX = p[0]; if (p[0] > maxX) maxX = p[0];
-  if (p[1] < minY) minY = p[1]; if (p[1] > maxY) maxY = p[1];
+// ---- 5. extent -----------------------------------------------------------------------------
+// bbox: everything. view: the 2nd-98th percentile of vertices, which the page
+// fits for its wide shot, so a few far rail islands don't shrink the city.
+
+function extents(segments) {
+  const xs = [], ys = [];
+  for (const { coords } of segments) for (const [x, y] of coords) { xs.push(x); ys.push(y); }
+  xs.sort((a, b) => a - b);
+  ys.sort((a, b) => a - b);
+  return {
+    bbox: [xs[0], ys[0], xs[xs.length - 1], ys[ys.length - 1]],
+    view: [percentile(xs, 0.02), percentile(ys, 0.02), percentile(xs, 0.98), percentile(ys, 0.98)],
+  };
 }
-// view box: 2nd-98th percentile of vertices, so far-flung regional-rail
-// islands don't shrink the city in the frame
-const xs = [], ys = [];
-for (const e of edges) for (const p of e.c) { xs.push(p[0]); ys.push(p[1]); }
-xs.sort((a, b) => a - b); ys.sort((a, b) => a - b);
-const pc = (a, f) => a[Math.min(a.length - 1, Math.floor(a.length * f))];
-const view = [pc(xs, 0.02), pc(ys, 0.02), pc(xs, 0.98), pc(ys, 0.98)];
-const doc = { origin, maxTime, date: meta.date, time: meta.time, q: Q,
-  bbox: [minX, minY, maxX, maxY], view, paths: out };
-fs.mkdirSync(path.dirname(OUT), { recursive: true });
-fs.writeFileSync(OUT, JSON.stringify(doc));
 
-const ws = edges.map(e => e.w).sort((a, b) => a - b);
+// ---- run ----------------------------------------------------------------------------------
+
+const fc = JSON.parse(fs.readFileSync(FILES.in, "utf8"));
+const meta = fc.metadata || {};
+const origin = [meta.origin.lng, meta.origin.lat];
+const maxTime = meta.maxTime || MINUTES * 60;
+
+const segments = readSegments(fc);
+const arrival = nodeArrivals(segments);
+const stats = { flipped: 0, walkPaced: 0 };
+const rows = timedRows(segments, arrival, maxTime, stats);
+const walkIn = walkInRows(rows, origin);
+rows.push(...walkIn.rows);
+rows.sort((a, b) => a[0] - b[0]);
+const { bbox, view } = extents(segments);
+
+const doc = { origin, maxTime, date: meta.date, time: meta.time, q: Q, bbox, view, paths: rows };
+fs.mkdirSync(path.dirname(FILES.out), { recursive: true });
+fs.writeFileSync(FILES.out, JSON.stringify(doc));
+
+const ws = segments.map(s => s.w).sort((a, b) => a - b);
 const summary = {
-  features: fc.features.length, edges: edges.length, written: out.length, nodes: T.size,
-  geomTypes: Object.fromEntries(geomTypes), propKeys: Object.fromEntries(propKeys),
-  sampleProps: fc.features.slice(0, 5).map(f => f.properties),
-  w: { min: ws[0], p50: ws[ws.length >> 1], max: ws[ws.length - 1] },
-  flatEdges: flat, flipped, wInsideSpan: wInside, wEqualsLaterEnd: wAtEnd, wEqualsEarlierEnd: wAtStart,
-  bbox: doc.bbox, view, snaps: snaps.map(x => ({ t: x.t, m: Math.round(x.dm) })), bytes: fs.statSync(OUT).size,
+  segments: segments.length, nodes: arrival.size, written: rows.length,
+  travelTime: { min: ws[0], median: percentile(ws, 0.5), max: ws[ws.length - 1] },
+  flipped: stats.flipped, walkPaced: stats.walkPaced, walkIn: walkIn.lines,
+  bbox, view, bytes: fs.statSync(FILES.out).size,
 };
-fs.writeFileSync(SUMMARY, JSON.stringify(summary, null, 2));
+fs.writeFileSync(FILES.summary, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));

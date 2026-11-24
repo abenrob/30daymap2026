@@ -3,8 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>One Hour on Berlin Transit</title>
-<meta name="description" content="Every street you can reach within an hour of public transit from Alexanderplatz, growing outward minute by minute.">
+<title>40 Minutes on Berlin Transit</title>
+<meta name="description" content="Every street you can reach within 40 minutes of public transit from Alexanderplatz, growing outward minute by minute.">
+<meta property="og:title" content="Dropped at Alexanderplatz at 08:00: everywhere you can be by 08:40">
+<meta property="og:description" content="40 minutes of Berlin public transit from Alexanderplatz: every street lights up at the moment you could first stand on it. Routed network from the Targomo Multigraph API.">
+<meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-24-network/images/preview.png">
+<meta property="og:url" content="https://abenrob.github.io/30daymap2026/day-24-network/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,14 +22,15 @@
 
 <section class="title">
   <div class="kicker">Day 24 · Network</div>
-  <h1>One hour on Berlin transit</h1>
+  <h1>40 minutes on Berlin transit</h1>
   <p class="dek" id="dek">From Alexanderplatz, Tuesday 08:00</p>
 </section>
 
 <section class="clock">
   <div class="min"><span id="min">0</span><small>min</small></div>
   <div class="ramp"><i id="ramp-head"></i></div>
-  <div class="ticks"><span>0</span><span>30</span><span>60</span></div>
+  <div class="ticks"><span>0</span><span>20</span><span>40</span></div>
+  <input type="range" id="scrub" class="ui" min="0" max="40" step="0.1" value="0" aria-label="Minutes of travel">
 </section>
 
 <div class="controls ui">
@@ -36,6 +42,6 @@
 
 <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/deck.gl@8.9.36/dist.min.js"></script>
-<script src="app.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

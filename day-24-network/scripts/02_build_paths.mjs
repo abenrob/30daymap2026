@@ -78,6 +78,34 @@ for (const e of edges) {
   }
   if (row.length >= 6) out.push(row);
 }
+// 4. walk-in connectors. The drop point usually sits off the street graph
+// (the middle of Alexanderplatz is not in it), so Targomo charges a straight
+// walk to the nearest street and the first edges start ~150 m away. Draw that
+// walk: a straight line from the origin to the first point within 5 min
+// that is reachable at walking pace (<= 1.4 m/s from the origin) and that no
+// earlier edge already reaches. Faster first points are transit hops (the
+// next U-Bahn station) and stay as islands.
+const SNAP_MAX_T = 300, SNAP_MAX_V = 1.4, SNAP_DEDUPE = 25;
+const ends = out.map(r => { let x = r[2], y = r[3]; for (let i = 4; i < r.length; i += 2) { x += r[i]; y += r[i + 1]; } return [x / Q, y / Q, r[1]]; });
+const snaps = [];
+for (const r of out) {
+  if (r[0] > SNAP_MAX_T) continue;
+  const s0 = [r[2] / Q, r[3] / Q], dm = dist(origin, s0);
+  if (dm / Math.max(r[0], 1) > SNAP_MAX_V) continue;
+  if (ends.some(e => e[2] < r[0] - 0.5 && dist([e[0], e[1]], s0) < SNAP_DEDUPE)) continue;
+  if (snaps.some(sn => dist(sn.p, s0) < SNAP_DEDUPE)) continue;
+  snaps.push({ p: s0, t: r[0], dm });
+}
+// Targomo snaps the source to one spot: keep the earliest walk-in, plus any
+// reached within 15 s of it (a snap onto two streets); later ones are reached
+// along the street graph from there.
+snaps.sort((a, b) => a.t - b.t);
+const keep = snaps.filter(sn => sn.t <= snaps[0].t + 15);
+snaps.length = 0; snaps.push(...keep);
+for (const sn of snaps) {
+  const ox = Math.round(origin[0] * Q), oy = Math.round(origin[1] * Q);
+  out.push([0, sn.t, ox, oy, Math.round(sn.p[0] * Q) - ox, Math.round(sn.p[1] * Q) - oy]);
+}
 out.sort((a, b) => a[0] - b[0]);
 
 let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -104,7 +132,7 @@ const summary = {
   sampleProps: fc.features.slice(0, 5).map(f => f.properties),
   w: { min: ws[0], p50: ws[ws.length >> 1], max: ws[ws.length - 1] },
   flatEdges: flat, flipped, wInsideSpan: wInside, wEqualsLaterEnd: wAtEnd, wEqualsEarlierEnd: wAtStart,
-  bbox: doc.bbox, view, bytes: fs.statSync(OUT).size,
+  bbox: doc.bbox, view, snaps: snaps.map(x => ({ t: x.t, m: Math.round(x.dm) })), bytes: fs.statSync(OUT).size,
 };
 fs.writeFileSync(SUMMARY, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));

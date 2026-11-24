@@ -5,8 +5,9 @@
 // discards everything the clock has not reached yet, so a street fills in
 // from the end you reach first to the other.
 //
-// Colour is the Velographs "polar" ramp, d3.interpolateRgbBasis over
-// #8700A7, #25A39D, #FDE725, with travel time 0..maxTime mapped to 0..1.
+// Colour is the Velographs "polar" ramp: three stops after Viridis
+// (#8700A7, #25A39D, #FDE725) smoothed with d3.interpolateRgbBasis, with
+// travel time 0..maxTime mapped to 0..1.
 // Across the line's width there is a bright core and a soft Gaussian halo;
 // line reached in the last few seconds runs whiter and glows harder.
 
@@ -29,8 +30,9 @@ const FS_DECL = /* glsl */ `
   uniform float uSpark;  // seconds a freshly reached line stays hot
   varying float vTime;
 
-  // d3.interpolateRgbBasis(["#8700A7", "#25A39D", "#FDE725"]): a uniform cubic
-  // B-spline through the three colours, with the ends mirrored as d3 does.
+  // Viridis-style ramp from three stops, smoothed the way Velographs does it:
+  // d3.interpolateRgbBasis(["#8700A7", "#25A39D", "#FDE725"]), a uniform
+  // cubic B-spline through the stops with the ends mirrored as d3 does.
   vec3 polar(float t) {
     vec3 c0 = vec3(135.0, 0.0, 167.0) / 255.0;
     vec3 c1 = vec3(37.0, 163.0, 157.0) / 255.0;

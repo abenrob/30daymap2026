@@ -55,9 +55,9 @@ since the drop point itself sits off the street graph.
 
 ## Look
 
-- Colour: the Velographs "polar" ramp, d3
-  `interpolateRgbBasis(["#8700A7", "#25A39D", "#FDE725"])`, reproduced in the
-  shader, with travel time 0-40 min mapped to 0-1.
+- Colour: the Velographs "polar" ramp, three stops after Viridis smoothed with
+  d3 `interpolateRgbBasis(["#8700A7", "#25A39D", "#FDE725"])`, reproduced in
+  the shader, with travel time 0-40 min mapped to 0-1.
 - Lines: a bright core and a Gaussian halo; line reached in the last few
   seconds runs whiter. Width and halo ease from 8 px close up to 3.5 px at the
   wide view, so dense side streets stay separate. Normal blending

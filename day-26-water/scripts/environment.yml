@@ -1,0 +1,23 @@
+name: day26-water
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - xarray<2025.10      # zarr 2 support (xarray-eopf 0.3.1 needs zarr < 3)
+  - zarr<3
+  - dask
+  - rioxarray
+  - rasterio
+  - pyproj
+  - shapely
+  - netcdf4
+  - pystac-client
+  - requests
+  - scipy
+  - geopandas           # later steps (buildings, animation)
+  - matplotlib
+  - pillow
+  - ffmpeg
+  - pip
+  - pip:
+      - xarray-eopf==0.3.1

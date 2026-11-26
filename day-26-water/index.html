@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Garonne flood moving downriver · Day 26</title>
+  <meta name="description" content="The February 2026 Garonne flood from Aiguillon to Langon, seen by Sentinel-1 radar through the clouds and read from ESA's EOPF Zarr, coloured by the day the water arrived.">
+  <meta property="og:title" content="The Garonne flood moving downriver, seen through the clouds">
+  <meta property="og:description" content="76 Sentinel-1 scenes from ESA's EOPF Zarr: Tonneins flooded on 12 February, Langon on the 17th.">
+  <meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-26-water/images/preview.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 0 16px 40px; }
+    video { display: block; width: 100%; max-width: 540px; margin: 8px auto 16px; border-radius: 8px; background: #0e0e10; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 8px 0 16px; }
+    td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+    td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="quiet"><a href="../">30DayMapChallenge 2026</a> · Day 26 · Water</div>
+    <h1>The Garonne flood moving downriver, seen through the clouds</h1>
+  </header>
+  <main>
+    <video src="https://cdn.jsdelivr.net/gh/abenrob/30daymap2026@main/day-26-water/images/day-26-garonne.mp4" poster="images/preview.png" controls muted loop playsinline preload="metadata"></video>
+
+    <p>In February 2026 the Garonne rose to historic levels, under cloud. Sentinel-1 radar sees through it: calm water reflects the signal away and comes back black. I read 76 Sentinel-1 scenes from ESA's EOPF Sentinel Zarr with <code>xarray-eopf</code>, which calibrates and terrain-corrects each one onto a 50 m IGN grid as it opens. A cell counts as water when it is dark and at least 5 dB darker than a dry autumn reference from the same orbit. The colour is the day open water first appeared there.</p>
+
+    <table>
+      <tr><th>Stretch</th><th class="n">First seen as open water</th></tr>
+      <tr><td>Aiguillon and Tonneins</td><td class="n">12 Feb</td></tr>
+      <tr><td>Le Mas-d'Agenais, Marmande, Couthures</td><td class="n">13 Feb</td></tr>
+      <tr><td>La Réole and Langon (about three quarters of the flooded area; seen dry on 12 and 13 Feb)</td><td class="n">17 Feb</td></tr>
+      <tr><td>Flooded, Aiguillon to Langon</td><td class="n">76 km²</td></tr>
+      <tr><td>Buildings within 50 m of open water</td><td class="n">1,569</td></tr>
+    </table>
+
+    <p class="quiet">Between radar passes the water spreads by height above the river: that motion is interpolated, the dates are observed. Radar misses water between buildings and under trees, so the building count is a floor and measures exposure, not damage. No depth.
+    Copernicus Sentinel-1 data (2025-2026), ESA/Copernicus, via the EOPF Sentinel Zarr samples service. Elevation, buildings and rivers: IGN RGE ALTI and BD TOPO via the Géoplateforme (Licence Ouverte 2.0).
+    Method, numbers and scripts: <a href="https://github.com/abenrob/30daymap2026/tree/main/day-26-water">README and code on GitHub</a>.</p>
+  </main>
+</body>
+</html>

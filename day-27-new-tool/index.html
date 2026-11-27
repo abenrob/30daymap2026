@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Aiguille Dibona, from IGN orthophoto to ink drawing · Day 27</title>
+  <meta name="description" content="The Aiguille Dibona in the Écrins, from the IGN orthophoto to a flat-colour ink drawing, rendered in Blender from IGN LiDAR HD: an homage to Jean-Marc Rochette's Ailefroide.">
+  <meta property="og:title" content="The Aiguille Dibona, from IGN orthophoto to ink drawing">
+  <meta property="og:description" content="IGN LiDAR HD, Grease Pencil Line Art and a flat-colour shader in Blender: an homage to Rochette's Ailefroide.">
+  <meta property="og:image" content="https://abenrob.github.io/30daymap2026/day-27-new-tool/images/preview.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 0 16px 40px; }
+    video { display: block; width: 100%; max-width: 540px; margin: 8px auto 16px; border-radius: 8px; background: #14182a; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="quiet"><a href="../">30DayMapChallenge 2026</a> · Day 27 · New tool</div>
+    <h1>The Aiguille Dibona, from IGN orthophoto to ink drawing</h1>
+  </header>
+  <main>
+    <video src="https://cdn.jsdelivr.net/gh/abenrob/30daymap2026@main/day-27-new-tool/images/day-27-dibona.mp4" poster="images/preview.png" controls muted loop playsinline preload="metadata"></video>
+
+    <p>I've opened Blender a few times this month, mostly as a quick way to render a 3D map. This time I used it to draw: an homage to Jean-Marc Rochette's <i>Ailefroide</i>, on the Aiguille Dibona above La Bérarde. The shot starts on the IGN orthophoto with 40 m contours, the photo gives way to flat colour while the ground is still flat, the relief rises out of the map, and the camera comes down to look up at the needle from the floor of the Vallon du Soreiller.</p>
+
+    <p>The terrain is IGN LiDAR HD, 1 m around the needle and 2 m beyond, meshed only where the camera looks. The colour comes from the terrain shader: Blender's lighting is cut into three greys and a navy shadow, and only slopes steep enough to be rock may go dark. Grease Pencil Line Art inks the silhouettes, bold on the lit rock and pale inside the shadows.</p>
+
+    <p class="quiet">What broke: Line Art's crease lines came back empty in Blender 5.3, so the rock streaks are painted by the shader, and the first contours (Grease Pencil strokes) showed through the ridges, so they moved into the terrain shader too.
+    Data: IGN LiDAR HD, orthophotos and BD TOPO via the Géoplateforme (Licence Ouverte 2.0). Font: Antonio (SIL OFL). Homage to <i>Ailefroide, Altitude 3 954</i> by Olivier Bocquet and Jean-Marc Rochette (Casterman).
+    Method and scripts: <a href="https://github.com/abenrob/30daymap2026/tree/main/day-27-new-tool">README and code on GitHub</a>.</p>
+  </main>
+</body>
+</html>

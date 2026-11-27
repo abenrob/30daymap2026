@@ -38,6 +38,7 @@ In day order. A row is added when the day is published.
 | 24 | Network | [Dropped at Alexanderplatz at 08:00: everywhere you can be by 08:40](day-24-network/) |
 | 25 | Is this a map? | [The whole sky above Charmant Som in one fisheye, with the Alps and the valley lights around the rim](day-25-is-this-a-map/) |
 | 26 | Water | [The Garonne flood moving downriver, seen through the clouds: Tonneins on 12 February, Langon on the 17th](day-26-water/) ([video](https://abenrob.github.io/30daymap2026/day-26-water/)) |
+| 27 | New tool | [The Aiguille Dibona, from IGN orthophoto to ink drawing, rendered in Blender](day-27-new-tool/) ([video](https://abenrob.github.io/30daymap2026/day-27-new-tool/)) |
 
 ## Layout
 

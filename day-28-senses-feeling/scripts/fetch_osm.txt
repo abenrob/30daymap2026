@@ -1,0 +1,8 @@
+[out:json][timeout:170];
+(
+ way["highway"~"^(motorway|trunk|primary|secondary|tertiary|motorway_link|trunk_link)$"](45.00,5.55,45.32,5.95);
+ way["waterway"="river"](44.95,5.45,45.45,6.10);
+ way["natural"="water"]["water"~"river|lake|reservoir"](44.95,5.45,45.45,6.10);
+ relation["natural"="water"]["water"~"river|lake|reservoir"](44.95,5.45,45.45,6.10);
+);
+out geom qt;

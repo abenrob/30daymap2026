@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Le ressenti à vélo · Grenoble-Alpes Métropole</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@font-face { font-family: Serif4; font-style: italic; src: url(fonts/source-serif-4-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: Serif4; font-style: italic; src: url(fonts/source-serif-4-latin-ext-400-italic.woff2) format('woff2'); unicode-range: U+0100-024F; }
+@font-face { font-family: Stamp; font-weight: 600; src: url(fonts/oswald-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: Stamp; font-weight: 600; src: url(fonts/oswald-latin-ext-600-normal.woff2) format('woff2'); unicode-range: U+0100-024F; }
+@font-face { font-family: Sans; font-weight: 400; src: url(fonts/inter-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: Sans; font-weight: 600; src: url(fonts/inter-latin-600-normal.woff2) format('woff2'); }
+:root { --neg: #e04e2a; --mix: #a2479b; --pos: #2f6fd0; --ink: #26282b; --ink2: #5b5f66; --paper: #eeebe4; }
+html, body { margin: 0; background: #d9dde2; }
+#stage { position: relative; width: 1080px; height: 1350px; overflow: hidden; transform-origin: 0 0;
+  background: linear-gradient(#cfd6de 0%, #dfe3e7 22%, #eceae5 45%); font-family: Sans; color: var(--ink); }
+#gl, #fx { position: absolute; inset: 0; }
+#head { position: absolute; left: 56px; top: 44px; right: 56px; }
+#kicker { font: 600 22px Sans; letter-spacing: .06em; text-transform: uppercase; color: var(--ink2); }
+#title { font: italic 64px/1.05 Serif4; margin-top: 10px; max-width: 900px; }
+#sub { font: 400 24px/1.35 Sans; color: var(--ink2); margin-top: 14px; max-width: 860px; }
+#card { position: absolute; left: 90px; right: 90px; top: 330px; text-align: left; transform-origin: 50% 50%; }
+#quote { font: italic 50px/1.18 Serif4; color: var(--ink); text-shadow: 0 0 18px rgba(238,235,228,.95), 0 0 6px rgba(238,235,228,.95); }
+#quote .caret { display: inline-block; width: 3px; height: .9em; background: var(--ink); margin-left: 4px; vertical-align: -0.1em; }
+.stamp { position: absolute; font: 600 64px/1 Stamp; letter-spacing: .04em; padding: 6px 18px 10px; border: 6px solid currentColor;
+  border-radius: 8px; background: rgba(238,235,228,.85); transform-origin: 50% 50%; white-space: nowrap; }
+.stamp .strike { position: absolute; left: -10px; right: -10px; top: 50%; height: 7px; background: var(--ink); transform-origin: 0 50%; }
+#count { position: absolute; left: 40px; bottom: 40px; padding: 12px 18px; background: rgba(238,235,228,.9); border-radius: 10px; font: 600 26px Sans; color: var(--ink); }
+#count small { display: block; font: 400 20px Sans; color: var(--ink2); margin-top: 4px; }
+#legend { position: absolute; right: 40px; bottom: 40px; width: 380px; padding: 16px 18px 12px; background: rgba(238,235,228,.9); border-radius: 10px; }
+#legend h3 { margin: 0 0 12px; font: 600 21px Sans; }
+#legend .grid { display: grid; grid-template-columns: 96px repeat(3, 1fr); gap: 4px; align-items: center; }
+#legend .cell { height: 34px; border-radius: 4px; }
+#legend .rl { font: 400 17px Sans; color: var(--ink2); text-align: right; padding-right: 8px; }
+#legend .cl { font: 400 17px/1.15 Sans; color: var(--ink2); text-align: center; padding-top: 6px; }
+#credit { position: absolute; left: 56px; right: 56px; bottom: 16px; font: 400 15px Sans; color: var(--ink2); }
+#endstats { position: absolute; left: 40px; top: 190px; max-width: 500px; padding: 14px 18px; background: rgba(238,235,228,.9); border-radius: 10px; font: 400 21px/1.45 Sans; color: var(--ink); }
+#endstats b { font-weight: 600; }
+.fade { opacity: 0; }
+#feel { position: absolute; right: 40px; width: 400px; padding: 14px 18px 12px; background: rgba(238,235,228,.9); border-radius: 10px; }
+#feel h3 { margin: 0 0 10px; font: 600 20px Sans; white-space: nowrap; }
+#feel h3 span { font-weight: 400; color: var(--ink2); }
+#feel .row { display: grid; grid-template-columns: 158px 1fr 56px; align-items: center; height: 24px; column-gap: 8px; }
+#feel .nm { font: 600 17px Stamp; letter-spacing: .03em; color: var(--ink); text-align: right; }
+#feel .tr { height: 13px; position: relative; }
+#feel .br { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; min-width: 0; }
+#feel .ct { font: 400 16px Sans; color: var(--ink2); text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" width="1080" height="1350"></canvas>
+  <canvas id="fx" width="1080" height="1350"></canvas>
+  <div id="head">
+    <div id="kicker">Baromètre vélo 2025 · Grenoble-Alpes Métropole</div>
+    <div id="title">Là où l’on a peur, là où ça va mieux</div>
+    <div id="sub"></div>
+  </div>
+  <div id="card" class="fade"><div id="quote"></div></div>
+  <div id="endstats" class="fade"></div>
+  <div id="count" class="fade"></div>
+  <div id="legend" class="fade"></div>
+  <div id="feel" class="fade"></div>
+  <div id="credit">Données : FUB, Baromètre des villes cyclables 2025 (ODbL) · Relief : IGN RGE ALTI · Fond : © contributeurs OpenStreetMap</div>
+</div>
+<script type="importmap">{ "imports": { "three": "./lib/three.module.js" } }</script>
+<script type="module">
+import * as THREE from 'three';
+
+const D = await (await fetch('anim.json')).json();
+const heights = new Float32Array(await (await fetch('terrain.f32')).arrayBuffer());
+await document.fonts.load('italic 50px Serif4'); await document.fonts.load('600 64px Stamp'); await document.fonts.load('600 20px Sans');
+await document.fonts.ready;
+
+const W = 1080, H = 1350, TL = D.timeline, LABELS = D.labels;
+const COL = ['#e04e2a', '#a2479b', '#2f6fd0'];
+const PAPER = new THREE.Color('#eeebe4');
+const ramp = (hex, k) => new THREE.Color(hex).lerp(PAPER, 1 - k);
+const VOLK = [0.36, 0.66, 1.0];
+
+// ---------- three scene
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xd9dfe5, 30, 64);
+const camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 400);
+const P = new URLSearchParams(location.search);
+const TARGET = new THREE.Vector3(+(P.get('tx') ?? -2.5), 0.25, +(P.get('tz') ?? 1));
+const ELEV = +(P.get('el') ?? 28) * Math.PI / 180, DIST = +(P.get('d') ?? 29), YAW = +(P.get('yaw') ?? -4) * Math.PI / 180;
+function placeCamera(t) {
+  const d = DIST * (1 - 0.06 * smooth(0, TL.end, t));        // very slow push-in
+  camera.position.set(TARGET.x + d * Math.cos(ELEV) * Math.sin(YAW), TARGET.y + d * Math.sin(ELEV), TARGET.z + d * Math.cos(ELEV) * Math.cos(YAW));
+  camera.lookAt(TARGET); camera.updateMatrixWorld();
+}
+// terrain
+const T = D.terrain;
+const geo = new THREE.PlaneGeometry(T.sizeX, T.sizeY, T.w - 1, T.h - 1);
+geo.rotateX(-Math.PI / 2);
+const pos = geo.attributes.position;
+for (let i = 0; i < pos.count; i++) pos.setY(i, heights[i]);
+geo.computeVertexNormals();
+const tex = await new THREE.TextureLoader().loadAsync('basemap.jpg');
+tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+scene.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })));
+
+// points: instanced flat discs (dots) + rings for splats
+const pts = D.points, N = pts.length;
+const disc = new THREE.CircleGeometry(1, 20); disc.rotateX(-Math.PI / 2);
+const dotMat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, fog: false });
+const dots = new THREE.InstancedMesh(disc, dotMat, N); dots.frustumCulled = false;
+const ringG = new THREE.RingGeometry(0.82, 1, 32); ringG.rotateX(-Math.PI / 2);
+const rings = new THREE.InstancedMesh(ringG, new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, fog: false, opacity: 0.85 }), N);
+rings.frustumCulled = false;
+for (let i = 0; i < N; i++) { const c = new THREE.Color(COL[pts[i][3]]); dots.setColorAt(i, c); rings.setColorAt(i, c); }
+scene.add(rings, dots);
+// hexes (flat, draped at +offset, shrunk for a hairline gap)
+const hexGroup = new THREE.Group(); scene.add(hexGroup);
+const hexMeshes = D.hexes.map(h => {
+  const cx = h.r.reduce((a, p) => a + p[0], 0) / 6, cz = h.r.reduce((a, p) => a + p[1], 0) / 6;
+  const cy = Math.max(...h.r.map(p => p[2]));
+  const shape = new THREE.Shape(h.r.map(p => new THREE.Vector2((p[0] - cx) * 0.9, -(p[1] - cz) * 0.9)));
+  const g = new THREE.ShapeGeometry(shape); g.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: ramp(COL[h.l], VOLK[h.v]), transparent: true, opacity: 0, depthWrite: false, fog: false }));
+  m.position.set(cx, cy + 0.012, cz); m.renderOrder = 2;
+  m.userData.delay = Math.hypot(cx - TARGET.x, cz - TARGET.z);
+  hexGroup.add(m); return m;
+});
+const maxDelay = Math.max(...hexMeshes.map(m => m.userData.delay));
+
+// ---------- helpers
+function clamp(x, a = 0, b = 1) { return Math.min(b, Math.max(a, x)); }
+function smooth(a, b, t) { const x = clamp((t - a) / (b - a)); return x * x * (3 - 2 * x); }
+function easeIn(x) { return x * x * x; }
+function easeOutBack(x) { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
+const v3 = new THREE.Vector3();
+function toScreen(p, lift = 0) { v3.set(p[0], p[2] + lift, p[1]).project(camera); return [(v3.x + 1) / 2 * W, (1 - v3.y) / 2 * H]; }
+const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), S3 = new THREE.Vector3(), P3 = new THREE.Vector3();
+const DOT_R = 0.05, FALL = 0.42, DROP_H = 0.9;
+
+const fx = document.getElementById('fx').getContext('2d');
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString('fr-FR').replace(/ /g, ' ');
+
+// legend
+(function buildLegend() {
+  const vl = ['3–5', '6–14', '15 +'];
+  let html = '<h3>Par hexagone de ~400 m</h3><div class="grid">';
+  for (let v = 2; v >= 0; v--) {
+    html += `<div class="rl">${vl[v]} pts</div>`;
+    for (let l = 0; l < 3; l++) html += `<div class="cell" style="background:#${ramp(COL[l], VOLK[v]).getHexString()}"></div>`;
+  }
+  html += '<div></div><div class="cl">surtout<br>négatif</div><div class="cl">partagé</div><div class="cl">surtout<br>positif</div></div>';
+  $('legend').innerHTML = html;
+})();
+
+// ---------- feelings tally
+const FAM = { 'PEUR': 0, 'COLÈRE': 0, 'AGACEMENT': 0, 'INQUIÉTUDE': 0, 'LASSITUDE': 0, 'INCOMPRÉHENSION': 0, 'CONSTAT': -1, 'SOUHAIT': -1, 'SOULAGEMENT': 2, 'SATISFACTION': 2, 'JOIE': 2, 'GRATITUDE': 2 };
+const FAMCOL = { '0': COL[0], '-1': '#9a9ea5', '2': COL[2] };
+const finalCount = new Array(LABELS.length).fill(0);
+pts.forEach(p => { if (p[5] >= 0) finalCount[p[5]]++; });
+const feelOrder = LABELS.map((l, i) => i).sort((a, b) => finalCount[b] - finalCount[a]);
+const feelMax = Math.max(...finalCount);
+const feelEl = document.getElementById('feel');
+feelEl.innerHTML = '<h3>Ressentis <span id="feelN"></span></h3>' + feelOrder.map(i =>
+  `<div class="row"><div class="nm">${LABELS[i]}</div><div class="tr"><div class="br" id="fb${i}" style="background:${FAMCOL[FAM[LABELS[i]]]}"></div></div><div class="ct" id="fc${i}">0</div></div>`).join('');
+const feelH = feelEl.offsetHeight;
+
+// ---------- quote card state
+const card = $('card'), quoteEl = $('quote');
+let stampEls = [];
+function clearStamps() { stampEls.forEach(e => e.remove()); stampEls = []; }
+function makeStamp(text, color, x, y, rot, scale, strikeK = 0) {
+  const s = document.createElement('div'); s.className = 'stamp'; s.textContent = text; s.style.color = color;
+  if (strikeK > 0) { const k = document.createElement('div'); k.className = 'strike'; k.style.transform = `scaleX(${strikeK})`; s.appendChild(k); }
+  card.appendChild(s);
+  s.style.left = x + 'px'; s.style.top = y + 'px'; s.style.transform = `rotate(${rot}deg) scale(${scale})`;
+  stampEls.push(s); return s;
+}
+const FILE_WORD = ['À AMÉLIORER', '', 'AMÉLIORÉ'];
+const VAL_COL = COL;
+
+function renderQuote(q, t) {
+  const dur = q.tland + 0.35 - q.t0, u = t - q.t0;
+  const flip = q.flipped;
+  const typeEnd = 0.75, stamp1 = typeEnd + 0.1, strikeT = stamp1 + 0.45, stamp2 = flip ? strikeT + 0.4 : stamp1;
+  const collapseA = q.tland - 0.75 - q.t0, collapseB = q.tland - 0.3 - q.t0;
+  // typing
+  const n = Math.round(q.text.length * clamp(u / typeEnd));
+  quoteEl.innerHTML = q.text.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;') + (u < typeEnd ? '<span class="caret"></span>' : '');
+  clearStamps();
+  const qh = quoteEl.offsetHeight;
+  const sy = qh + 26;
+  if (flip) {
+    if (u > stamp1) {
+      const k = easeOutBack(clamp((u - stamp1) / 0.18));
+      const strike = clamp((u - strikeT) / 0.2);
+      const s = makeStamp(FILE_WORD[q.file], VAL_COL[q.file], 0, sy, -4, 1.6 - 0.6 * k, strike);
+      s.style.opacity = (0.35 + 0.65 * k) * (1 - 0.45 * strike);
+    }
+    if (u > stamp2) {
+      const k = easeOutBack(clamp((u - stamp2) / 0.18));
+      const s = makeStamp(q.label, VAL_COL[q.valence], 330, sy + 18, 3, 1.6 - 0.6 * k);
+      s.style.opacity = 0.35 + 0.65 * k;
+    }
+  } else if (u > stamp1) {
+    const k = easeOutBack(clamp((u - stamp1) / 0.18));
+    const s = makeStamp(q.label, VAL_COL[q.valence], 0, sy, -4, 1.6 - 0.6 * k);
+    s.style.opacity = 0.35 + 0.65 * k;
+  }
+  // collapse toward the landing point
+  const c = smooth(collapseA, collapseB, u);
+  const [tx, ty] = toScreen(q.pos, DROP_H);
+  const baseX = W / 2, baseY = 330 + (qh + 120) / 2;
+  card.style.transform = `translate(${(tx - baseX) * c}px, ${(ty - baseY) * c}px) scale(${1 - 0.97 * c})`;
+  card.style.opacity = (1 - smooth(collapseB - 0.1, collapseB, u)) * smooth(0, 0.12, u);
+}
+
+// ---------- the frame function
+let currentScale = 1;
+function renderAt(t) {
+  placeCamera(t);
+  // header
+  const titleOut = smooth(TL.quotesStart - 0.4, TL.quotesStart + 0.2, t);
+  $('title').style.opacity = 1 - titleOut * 0.0;
+  $('title').style.fontSize = (64 - 22 * titleOut) + 'px';
+  $('sub').textContent = 'Chaque point a été posé sur la carte par un·e cycliste. Ce qu’on y a écrit dit ce qu’on y ressent.';
+  $('sub').style.opacity = 1 - titleOut;
+  $('sub').style.display = titleOut >= 1 ? 'none' : 'block';
+
+  // quotes
+  const q = D.quotes.find(q => t >= q.t0 && t < q.tland + 0.35);
+  if (q) renderQuote(q, t); else { card.style.opacity = 0; clearStamps(); }
+
+  // points
+  let landed = 0, cNeg = 0, cPos = 0, cMix = 0;
+  const fcount = new Array(LABELS.length).fill(0);
+  const hexK = smooth(TL.hexIn, TL.hexIn + 2.6, t);
+  for (let i = 0; i < N; i++) {
+    const p = pts[i], tl = p[4];
+    const fallStart = tl - FALL;
+    let y, s, rs = 0;
+    if (t < fallStart) { S3.set(0, 0, 0); P3.set(0, -50, 0); }
+    else if (t < tl) {
+      const k = easeIn((t - fallStart) / FALL);
+      y = p[2] + DROP_H * (1 - k); s = DOT_R * 0.8;
+      S3.set(s, s, s); P3.set(p[0], y, p[1]);
+    } else {
+      landed++; if (p[3] === 0) cNeg++; else if (p[3] === 2) cPos++; else cMix++;
+      if (p[5] >= 0) fcount[p[5]]++;
+      const a = t - tl;
+      const squash = a < 0.25 ? 1 + 0.9 * Math.sin(a / 0.25 * Math.PI) : 1;
+      s = DOT_R * squash * (1 - 0.55 * hexK);
+      S3.set(s, s, s); P3.set(p[0], p[2] + 0.004, p[1]);
+      rs = a < 0.9 ? 0.04 + 0.16 * (1 - Math.pow(1 - a / 0.9, 2)) : 0;
+    }
+    Q.identity(); M4.compose(P3, Q, S3); dots.setMatrixAt(i, M4);
+    if (rs > 0) { S3.set(rs, rs, rs); P3.set(p[0], p[2] + 0.003, p[1]); } else { S3.set(0, 0, 0); P3.set(0, -50, 0); }
+    M4.compose(P3, Q, S3); rings.setMatrixAt(i, M4);
+  }
+  dots.instanceMatrix.needsUpdate = true; rings.instanceMatrix.needsUpdate = true;
+  dotMat.opacity = 0.9 - 0.75 * hexK;
+  rings.material.opacity = 0.7 * (1 - hexK);
+
+  // hexes sweep in from the centre
+  hexMeshes.forEach(m => { const d0 = TL.hexIn + 2.2 * m.userData.delay / maxDelay; m.material.opacity = 0.93 * smooth(d0, d0 + 0.6, t); });
+
+  renderer.render(scene, camera);
+
+  // fx canvas: floating labels during the speed-up phase
+  fx.clearRect(0, 0, W, H);
+  if (t > TL.p2[0] - 0.5 && t < TL.p3[0] + 1.5) {
+    fx.textAlign = 'center'; fx.textBaseline = 'bottom';
+    const boxes = [];
+    for (let i = D.quotes.length; i < TL.n2; i++) {   // labels only for the speed-up sample
+      const p = pts[i]; if (p[5] < 0) continue;
+      const a = t - p[4];
+      if (a < -0.3 || a > 0.7) continue;
+      const life = a < 0 ? smooth(-0.3, -0.05, a) : 1 - smooth(0.25, 0.7, a);
+      const [sx, sy] = toScreen(p, 0.15);
+      const prog = clamp((p[4] - TL.p2[0]) / (TL.p2[1] - TL.p2[0]));
+      const size = 40 - 22 * prog;
+      fx.font = `600 ${size}px Stamp`;
+      const bw = fx.measureText(LABELS[p[5]]).width + 8, bh = size;
+      const bx = sx - bw / 2, by = sy - 6 - bh;
+      if (boxes.some(b => bx < b[0] + b[2] && b[0] < bx + bw && by < b[1] + b[3] && b[1] < by + bh)) continue;
+      boxes.push([bx, by, bw, bh]);
+      fx.globalAlpha = life;
+      fx.lineWidth = 6; fx.strokeStyle = 'rgba(238,235,228,0.9)';
+      fx.strokeText(LABELS[p[5]], sx, sy - 6); fx.fillStyle = COL[p[3]]; fx.fillText(LABELS[p[5]], sx, sy - 6);
+    }
+    fx.globalAlpha = 1;
+  }
+
+  // counter
+  const cnt = $('count');
+  cnt.style.opacity = smooth(TL.quotesStart, TL.quotesStart + 0.5, t) * (1 - smooth(TL.hexIn, TL.hexIn + 0.6, t));
+  cnt.innerHTML = `${fmt(landed)} / ${fmt(N)} points<small><span style="color:${COL[0]}">■</span> ${fmt(cNeg)} négatifs · <span style="color:${COL[1]}">■</span> ${fmt(cMix)} partagés · <span style="color:${COL[2]}">■</span> ${fmt(cPos)} positifs</small>`;
+  let nf = 0;
+  for (let i = 0; i < LABELS.length; i++) { nf += fcount[i];
+    document.getElementById('fb' + i).style.width = (100 * fcount[i] / feelMax) + '%';
+    document.getElementById('fc' + i).textContent = fmt(fcount[i]); }
+  document.getElementById('feelN').textContent = '· ' + fmt(nf) + ' commentaires';
+  const mv = smooth(TL.hexIn, TL.hexIn + 1.2, t);
+  feelEl.style.top = ((H - 40 - feelH) * (1 - mv) + 190 * mv) + 'px';
+  feelEl.style.opacity = smooth(TL.quotesStart, TL.quotesStart + 0.5, t);
+  $('legend').style.opacity = smooth(TL.hexIn + 1.4, TL.hexIn + 2.2, t);
+  const es = $('endstats');
+  es.style.opacity = smooth(TL.hexIn + 3.0, TL.hexIn + 3.8, t);
+  const S = D.summary;
+  es.innerHTML = `<b>${fmt(S.total)}</b> points, <b>${fmt(S.commented)}</b> commentaires lus un par un.<br>` +
+    `<span style="color:${COL[0]}">■</span> <b>${fmt(S.neg)}</b> négatifs &nbsp; <span style="color:${COL[1]}">■</span> <b>${fmt(S.mixed)}</b> partagés &nbsp; <span style="color:${COL[2]}">■</span> <b>${fmt(S.pos)}</b> positifs<br>` +
+    `<b>${S.flipped}</b> points disaient l’inverse de leur calque.`;
+}
+
+// ---------- drive: live playback, or deterministic capture via window.renderAt
+function fit() { currentScale = Math.min(innerWidth / W, innerHeight / H, 1); $('stage').style.transform = `scale(${currentScale})`; }
+window.renderAt = t => { currentScale = 1; renderAt(t); };
+window.DURATION = TL.end;
+if (P.has('capture')) { window.READY = true; }
+else {
+  fit(); addEventListener('resize', fit);
+  const t0 = performance.now() - (+(P.get('t') ?? 0)) * 1000;
+  const loop = () => { const t = ((performance.now() - t0) / 1000) % (TL.end + 1); renderAt(t); requestAnimationFrame(loop); };
+  if (P.has('still')) renderAt(+P.get('t')); else loop();
+}
+</script>
+</body>
+</html>
